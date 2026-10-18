@@ -1,0 +1,384 @@
+{
+  "version": 1,
+  "updatedAt": "2026-10-18T00:30:08.397Z",
+  "hiddenAuto": [],
+  "site": {
+    "name": "Spoiler-Free CS2",
+    "heroText": "Every match from the first stage to the grand final. No scores, no video lengths, nothing that gives the result away.",
+    "howTitle": "How spoiler-free works",
+    "how": [
+      {
+        "title": "No scores",
+        "text": "Results never show up in titles, thumbnails or anywhere on the page."
+      },
+      {
+        "title": "No video lengths",
+        "text": "Run times and progress bars stay hidden, so a long map can't tip you off."
+      },
+      {
+        "title": "Every map listed",
+        "text": "Each series shows all of its possible maps, so you can't count how many were played."
+      },
+      {
+        "title": "Later rounds locked",
+        "text": "Matchups that would give away earlier results stay hidden until you open them."
+      }
+    ],
+    "footer": "Videos are played from YouTube.",
+    "featuredId": "pgl-masters-bucharest-2026",
+    "example": false
+  },
+  "teams": [
+    {
+      "id": "tm-vitality",
+      "name": "Vitality",
+      "logo": "",
+      "aliases": [
+        "Team Vitality"
+      ]
+    },
+    {
+      "id": "tm-navi",
+      "name": "NAVI",
+      "logo": "",
+      "aliases": [
+        "Natus Vincere",
+        "Na'Vi"
+      ]
+    },
+    {
+      "id": "tm-spirit",
+      "name": "Spirit",
+      "logo": "",
+      "aliases": [
+        "Team Spirit"
+      ]
+    },
+    {
+      "id": "tm-mouz",
+      "name": "MOUZ",
+      "logo": "",
+      "aliases": [
+        "mousesports"
+      ]
+    },
+    {
+      "id": "tm-faze",
+      "name": "FaZe",
+      "logo": "",
+      "aliases": [
+        "FaZe Clan"
+      ]
+    },
+    {
+      "id": "tm-g2",
+      "name": "G2",
+      "logo": "",
+      "aliases": [
+        "G2 Esports"
+      ]
+    },
+    {
+      "id": "tm-furia",
+      "name": "FURIA",
+      "logo": "",
+      "aliases": [
+        "FURIA Esports"
+      ]
+    },
+    {
+      "id": "tm-falcons",
+      "name": "Falcons",
+      "logo": "",
+      "aliases": [
+        "Team Falcons"
+      ]
+    },
+    {
+      "id": "tm-aurora",
+      "name": "Aurora",
+      "logo": "",
+      "aliases": [
+        "Aurora Gaming"
+      ]
+    },
+    {
+      "id": "tm-the-mongolz",
+      "name": "The MongolZ",
+      "logo": "",
+      "aliases": [
+        "MongolZ"
+      ]
+    },
+    {
+      "id": "tm-liquid",
+      "name": "Liquid",
+      "logo": "",
+      "aliases": [
+        "Team Liquid"
+      ]
+    },
+    {
+      "id": "tm-pain",
+      "name": "paiN",
+      "logo": "",
+      "aliases": [
+        "paiN Gaming"
+      ]
+    },
+    {
+      "id": "tm-3dmax",
+      "name": "3DMAX",
+      "logo": "",
+      "aliases": []
+    },
+    {
+      "id": "tm-gamerlegion",
+      "name": "GamerLegion",
+      "logo": "",
+      "aliases": []
+    },
+    {
+      "id": "tm-virtus-pro",
+      "name": "Virtus.pro",
+      "logo": "",
+      "aliases": []
+    },
+    {
+      "id": "tm-heroic",
+      "name": "HEROIC",
+      "logo": "",
+      "aliases": []
+    },
+    {
+      "id": "tm-astralis",
+      "name": "Astralis",
+      "logo": "",
+      "aliases": []
+    },
+    {
+      "id": "tm-mibr",
+      "name": "MIBR",
+      "logo": "",
+      "aliases": []
+    },
+    {
+      "id": "tm-nrg",
+      "name": "NRG",
+      "logo": "",
+      "aliases": []
+    },
+    {
+      "id": "tm-legacy",
+      "name": "Legacy",
+      "logo": "",
+      "aliases": []
+    },
+    {
+      "id": "tm-tyloo",
+      "name": "TYLOO",
+      "logo": "",
+      "aliases": []
+    },
+    {
+      "id": "tm-lynn-vision",
+      "name": "Lynn Vision",
+      "logo": "",
+      "aliases": [
+        "Lynn Vision Gaming"
+      ]
+    },
+    {
+      "id": "tm-nemiga",
+      "name": "Nemiga",
+      "logo": "",
+      "aliases": [
+        "Nemiga Gaming"
+      ]
+    },
+    {
+      "id": "tm-betboom",
+      "name": "BetBoom",
+      "logo": "",
+      "aliases": [
+        "BetBoom Team"
+      ]
+    },
+    {
+      "id": "tm-b8",
+      "name": "B8",
+      "logo": "",
+      "aliases": []
+    },
+    {
+      "id": "tm-fnatic",
+      "name": "fnatic",
+      "logo": "",
+      "aliases": []
+    },
+    {
+      "id": "tm-nip",
+      "name": "NIP",
+      "logo": "",
+      "aliases": [
+        "Ninjas in Pyjamas"
+      ]
+    },
+    {
+      "id": "tm-flyquest",
+      "name": "FlyQuest",
+      "logo": "",
+      "aliases": []
+    },
+    {
+      "id": "tm-complexity",
+      "name": "Complexity",
+      "logo": "",
+      "aliases": [
+        "Complexity Gaming"
+      ]
+    },
+    {
+      "id": "tm-eternal-fire",
+      "name": "Eternal Fire",
+      "logo": "",
+      "aliases": []
+    },
+    {
+      "id": "tm-big",
+      "name": "BIG",
+      "logo": "",
+      "aliases": []
+    },
+    {
+      "id": "tm-ence",
+      "name": "ENCE",
+      "logo": "",
+      "aliases": []
+    },
+    {
+      "id": "tm-parivision",
+      "name": "PARIVISION",
+      "logo": "",
+      "aliases": []
+    },
+    {
+      "id": "tm-imperial",
+      "name": "Imperial",
+      "logo": "",
+      "aliases": [
+        "Imperial Esports"
+      ]
+    }
+  ],
+  "tournaments": [
+    {
+      "id": "pgl-masters-bucharest-2026",
+      "name": "PGL Masters Bucharest 2026",
+      "year": "2026",
+      "dates": "24–31 October 2026",
+      "location": "Bucharest, Romania",
+      "teamsText": "16 teams",
+      "logo": "",
+      "art": "",
+      "stages": [
+        {
+          "id": "pmb26-swiss",
+          "name": "Swiss Stage",
+          "info": "Swiss · Best of 3 · 24–28 Oct",
+          "rounds": []
+        },
+        {
+          "id": "pmb26-playoffs",
+          "name": "Playoffs",
+          "info": "Single elimination · Best of 3, final best of 5 · 29–31 Oct",
+          "rounds": []
+        }
+      ]
+    },
+    {
+      "id": "iem-beijing-2026",
+      "name": "IEM Beijing 2026",
+      "year": "2026",
+      "dates": "2–8 November 2026",
+      "location": "Beijing, China",
+      "teamsText": "16 teams",
+      "logo": "",
+      "art": "",
+      "stages": [
+        {
+          "id": "iemb26-groups",
+          "name": "Group Stage",
+          "info": "Two double-elimination groups · Best of 3 · 2–4 Nov",
+          "rounds": []
+        },
+        {
+          "id": "iemb26-playoffs",
+          "name": "Playoffs",
+          "info": "Single elimination · Best of 3, final best of 5 · 6–8 Nov",
+          "rounds": []
+        }
+      ]
+    },
+    {
+      "id": "blast-rivals-hong-kong-2026",
+      "name": "BLAST Rivals Hong Kong 2026",
+      "year": "2026",
+      "dates": "11–15 November 2026",
+      "location": "Hong Kong",
+      "teamsText": "8 teams",
+      "logo": "",
+      "art": "",
+      "stages": [
+        {
+          "id": "brhk26-groups",
+          "name": "Group Stage",
+          "info": "Two groups · 11–12 Nov",
+          "rounds": []
+        },
+        {
+          "id": "brhk26-playoffs",
+          "name": "Playoffs",
+          "info": "Single elimination · 13–15 Nov",
+          "rounds": []
+        }
+      ]
+    },
+    {
+      "id": "pgl-major-singapore-2026",
+      "name": "PGL Major Singapore 2026",
+      "year": "2026",
+      "dates": "25 November – 13 December 2026",
+      "location": "Singapore",
+      "teamsText": "32 teams",
+      "logo": "",
+      "art": "",
+      "stages": [
+        {
+          "id": "pms26-s1",
+          "name": "Stage 1",
+          "info": "Swiss · 16 teams",
+          "rounds": []
+        },
+        {
+          "id": "pms26-s2",
+          "name": "Stage 2",
+          "info": "Swiss · 16 teams",
+          "rounds": []
+        },
+        {
+          "id": "pms26-s3",
+          "name": "Stage 3",
+          "info": "Swiss · 16 teams",
+          "rounds": []
+        },
+        {
+          "id": "pms26-playoffs",
+          "name": "Playoffs",
+          "info": "Single elimination · Best of 3, final best of 5 · 10–13 Dec",
+          "rounds": []
+        }
+      ]
+    }
+  ]
+}

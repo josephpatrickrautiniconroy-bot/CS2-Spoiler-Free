@@ -1,0 +1,1675 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Spoiler-Free CS2</title>
+<meta name="description" content="Watch CS2 tournament videos without spoilers: no scores, no video lengths, no giveaways.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,600;0,800;1,600&amp;family=Barlow:wght@400;500;600&amp;display=swap">
+<style>
+/* Layout: broadcast lower-third. Cream paper, ink bars, one red; dark mode inverts to charcoal with cream type. */
+:root{
+  --paper:#F2EFE8; --ink:#15171A; --muted:#4A4D52; --rule:#CFC9BC; --frame:#15171A;
+  --thumb:#E6E0D3; --raised:#FFFFFF; --ph-line:#9A9488; --ph-ink:#5E5A52;
+  --accent:#C8372D; --accent-hover:#A92D25; --accent-ink:#C8372D; --accent-ink-hover:#9E2A22; --on-accent:#FFFFFF;
+  --bar:#15171A; --bar-ink:#F2EFE8; --bar-line:#5A5D63; --bar-accent:#E2483D;
+  --band:#15171A; --band-ink:#F2EFE8; --band-muted:#CFCBC2;
+  --strong:#15171A; --inv:#15171A; --inv-ink:#F2EFE8;
+  --edit:#1F5FA8; --edit-soft:rgba(31,95,168,.10); --edit-bar:#1F4F8A;
+  --ok:#2E7D4F; --controls:#222428;
+  --display:'Barlow Condensed','Arial Narrow','Roboto Condensed',sans-serif;
+  --body:'Barlow','Segoe UI','Helvetica Neue',Arial,sans-serif;
+  color-scheme:light;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --paper:#17181B; --ink:#F2EFE8; --muted:#B4B0A7; --rule:#34373C; --frame:#4A4D52;
+    --thumb:#26282C; --raised:#212327; --ph-line:#5A5D63; --ph-ink:#B4B0A7;
+    --accent:#C8372D; --accent-hover:#DB4236; --accent-ink:#EE6B5F; --accent-ink-hover:#F59088; --on-accent:#FFFFFF;
+    --bar:#0E0F11; --bar-ink:#F2EFE8; --bar-line:#5A5D63; --bar-accent:#EE6B5F;
+    --band:#0E0F11; --band-ink:#F2EFE8; --band-muted:#CFCBC2;
+    --strong:#F2EFE8; --inv:#F2EFE8; --inv-ink:#17181B;
+    --edit:#7DB3F0; --edit-soft:rgba(125,179,240,.12); --edit-bar:#1D4677;
+    --ok:#6CC48F; --controls:#26282C;
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#17181B; --ink:#F2EFE8; --muted:#B4B0A7; --rule:#34373C; --frame:#4A4D52;
+  --thumb:#26282C; --raised:#212327; --ph-line:#5A5D63; --ph-ink:#B4B0A7;
+  --accent:#C8372D; --accent-hover:#DB4236; --accent-ink:#EE6B5F; --accent-ink-hover:#F59088; --on-accent:#FFFFFF;
+  --bar:#0E0F11; --bar-ink:#F2EFE8; --bar-line:#5A5D63; --bar-accent:#EE6B5F;
+  --band:#0E0F11; --band-ink:#F2EFE8; --band-muted:#CFCBC2;
+  --strong:#F2EFE8; --inv:#F2EFE8; --inv-ink:#17181B;
+  --edit:#7DB3F0; --edit-soft:rgba(125,179,240,.12); --edit-bar:#1D4677;
+  --ok:#6CC48F; --controls:#26282C;
+  color-scheme:dark;
+}
+
+*,*::before,*::after{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+html.edit-mode{scroll-padding-top:120px}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--body);font-size:17px;line-height:1.5;-webkit-font-smoothing:antialiased}
+img{max-width:100%;display:block}
+button,input,select{font:inherit;color:inherit}
+a{color:var(--accent-ink)}
+a:hover{color:var(--accent-ink-hover)}
+:focus-visible{outline:3px solid var(--edit);outline-offset:2px}
+[tabindex="-1"]:focus{outline:none}
+h1,h2,h3{margin:0;text-wrap:balance}
+p{margin:0}
+code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:.92em}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+.wrap{max-width:1280px;margin-inline:auto;padding-left:max(clamp(16px,3vw,32px),env(safe-area-inset-left,0px));padding-right:max(clamp(16px,3vw,32px),env(safe-area-inset-right,0px))}
+.row{display:flex;flex-wrap:wrap;align-items:center;gap:8px}
+.ic{display:inline-flex;line-height:0}
+
+/* Header */
+.site-header{background:var(--bar);color:var(--bar-ink)}
+.header-in{min-height:72px;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px 24px;padding-block:8px}
+.brand{font-family:var(--display);font-weight:800;font-size:30px;letter-spacing:.04em;text-transform:uppercase;color:var(--bar-ink);text-decoration:none;line-height:1.1}
+.brand:hover{color:var(--bar-ink)}
+.main-nav{display:flex;flex-wrap:wrap;gap:0 28px;font-weight:600;font-size:15px;letter-spacing:.1em;text-transform:uppercase}
+.main-nav a{color:var(--bar-ink);text-decoration:none;padding:12px 0;border-bottom:3px solid transparent}
+.main-nav a:hover{color:var(--bar-ink);border-bottom-color:var(--bar-line)}
+.main-nav a[aria-current="page"]{border-bottom-color:var(--bar-accent)}
+.header-tools{display:flex;align-items:center;gap:12px}
+.icon-btn{width:44px;height:44px;display:inline-flex;align-items:center;justify-content:center;background:transparent;border:1px solid var(--bar-line);color:var(--bar-ink);cursor:pointer}
+.icon-btn:hover{background:rgba(255,255,255,.08)}
+.sf-badge{display:inline-flex;align-items:center;gap:8px;font-size:13px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;border:1px solid var(--bar-line);padding:8px 12px;min-height:44px}
+.site-header :focus-visible{outline-color:var(--bar-ink)}
+
+/* Buttons */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;min-height:48px;padding:10px 24px;font-family:var(--display);font-weight:800;font-size:21px;letter-spacing:.06em;text-transform:uppercase;text-decoration:none;cursor:pointer;border:2px solid transparent;line-height:1.1;text-align:center}
+.btn-accent{background:var(--accent);color:var(--on-accent)}
+.btn-accent:hover{background:var(--accent-hover);color:var(--on-accent)}
+.btn-outline{background:transparent;color:var(--ink);border-color:var(--strong)}
+.btn-outline:hover{background:var(--inv);color:var(--inv-ink)}
+.btn-inv{background:var(--inv);color:var(--inv-ink);border-color:var(--inv)}
+.btn-inv:hover{color:var(--inv-ink);opacity:.9}
+.btn-ghost{background:transparent;color:#F2EFE8;border-color:#F2EFE8}
+.btn-ghost:hover{background:#F2EFE8;color:#15171A}
+.btn-row{display:flex;flex-wrap:wrap;gap:12px}
+.btn-row.center{justify-content:center}
+.text-btn{background:none;border:none;color:var(--accent-ink);font-weight:600;font-size:15px;letter-spacing:.06em;text-transform:uppercase;min-height:44px;padding:0 4px;cursor:pointer}
+.text-btn.light{color:#F2EFE8;text-transform:none;letter-spacing:0;text-decoration:underline;font-size:15px}
+
+/* Shared type */
+.eyebrow{font-weight:600;font-size:14px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
+.h2{font-family:var(--display);font-weight:800;font-size:clamp(2.2rem,5vw,3.5rem);line-height:1;text-transform:uppercase}
+.h2-sm{font-size:clamp(1.9rem,4vw,2.4rem)}
+.meta{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 16px;font-weight:600;font-size:18px;color:var(--muted)}
+.dot{color:var(--ph-line)}
+.hint{font-size:14px;color:var(--muted)}
+.hint.ok{color:var(--ok)}
+.hint.bad{color:var(--accent-ink)}
+.empty{color:var(--muted)}
+.lbl{font-weight:600;font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+
+/* Home */
+.hero{display:flex;flex-wrap:wrap;align-items:center;gap:40px 48px;padding-block:56px}
+.hero-text{flex:999 1 520px;min-width:0;display:flex;flex-direction:column;gap:18px}
+.hero-title{font-family:var(--display);font-weight:800;font-size:clamp(3rem,8vw,5.5rem);line-height:.92;text-transform:uppercase;overflow-wrap:anywhere}
+.lede{max-width:34em;font-size:19px}
+.hero-art{flex:1 1 340px;max-width:100%;aspect-ratio:4/3;background:var(--thumb);overflow:hidden}
+.hero-art>img{width:100%;height:100%;object-fit:cover}
+.art-fallback{width:100%;height:100%;display:flex;align-items:center;justify-content:center;padding:24px;background:var(--thumb)}
+.art-logo{max-height:62%;max-width:62%;object-fit:contain}
+.art-name{font-family:var(--display);font-weight:800;font-size:clamp(1.8rem,3.4vw,2.8rem);line-height:1;text-transform:uppercase;text-align:center;color:var(--muted);overflow-wrap:anywhere}
+.section{border-top:2px solid var(--strong)}
+.section-in{padding-block:48px 64px;display:flex;flex-direction:column;gap:28px}
+.section-head{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-end;gap:12px 24px}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{min-height:44px;padding:8px 18px;background:transparent;color:var(--ink);border:2px solid var(--strong);font-family:var(--display);font-weight:800;font-size:18px;letter-spacing:.06em;text-transform:uppercase;cursor:pointer}
+.chip[aria-pressed="true"]{background:var(--inv);color:var(--inv-ink)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(300px,100%),1fr));gap:32px 24px}
+.t-card{display:flex;flex-direction:column;gap:14px;color:var(--ink);text-decoration:none}
+.t-card:hover{color:var(--ink)}
+.t-card:hover .t-name{text-decoration:underline;text-decoration-thickness:3px;text-underline-offset:4px}
+.t-art{aspect-ratio:16/9;max-width:100%;background:var(--thumb);border-bottom:6px solid var(--strong);overflow:hidden}
+.t-art>img{width:100%;height:100%;object-fit:cover}
+.t-art .art-name{font-size:28px}
+.t-body{display:flex;flex-direction:column;gap:2px}
+.t-name{font-family:var(--display);font-weight:800;font-size:30px;line-height:1.05;text-transform:uppercase;overflow-wrap:anywhere}
+.t-dates{font-weight:500;color:var(--muted)}
+.t-meta{font-weight:600;font-size:15px;letter-spacing:.06em;text-transform:uppercase;color:var(--accent-ink)}
+.band{background:var(--band);color:var(--band-ink);border-block:1px solid var(--rule)}
+.band-in{padding-block:56px;display:flex;flex-direction:column;gap:32px}
+.how-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(240px,100%),1fr));gap:32px}
+.how-item{display:flex;flex-direction:column;gap:8px;border-top:3px solid var(--accent);padding-top:16px}
+.how-item h3{font-family:var(--display);font-weight:800;font-size:28px;line-height:1.05;text-transform:uppercase}
+.how-item p{color:var(--band-muted)}
+.band :focus-visible{outline-color:var(--band-ink)}
+
+/* Footer */
+.footer-in{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:12px 24px;padding-block:32px;font-size:15px;color:var(--muted)}
+.footer-brand{font-family:var(--display);font-weight:800;font-size:22px;text-transform:uppercase;color:var(--ink)}
+
+/* Tournament page */
+.t-head{padding-block:32px 0;display:flex;flex-direction:column;gap:20px}
+.crumbs{display:flex;flex-wrap:wrap;gap:8px;font-weight:500;font-size:15px;color:var(--muted)}
+.crumbs a{color:var(--muted)}
+.crumbs a:hover{color:var(--ink)}
+.crumb-cur{color:var(--ink)}
+.t-title-row{display:flex;flex-wrap:wrap;align-items:center;gap:20px 32px}
+.t-title-col{flex:1 1 380px;min-width:0;display:flex;flex-direction:column;gap:10px}
+.t-title{font-family:var(--display);font-weight:800;font-size:clamp(2.6rem,7vw,5rem);line-height:.92;text-transform:uppercase;overflow-wrap:anywhere}
+.t-logo{width:128px;height:128px;flex-shrink:0;display:flex;align-items:center;justify-content:center}
+.img-slot.t-logo>img{object-fit:contain;padding:12px}
+.t-logo .monogram{font-size:44px}
+.art-edit{width:min(320px,100%);aspect-ratio:16/9;display:flex;align-items:center;justify-content:center}
+.stage-nav{border-bottom:2px solid var(--strong);margin-top:32px}
+.stage-tabs{display:flex;flex-wrap:wrap;gap:4px}
+.stage-tab{min-height:48px;display:inline-flex;align-items:center;padding:10px 22px;font-family:var(--display);font-weight:800;font-size:22px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink);text-decoration:none;background:transparent;border:none;cursor:pointer}
+.stage-tab:hover{color:var(--accent-ink)}
+.stage-tab[aria-current="page"]{background:var(--inv);color:var(--inv-ink)}
+.stage-tab.add{color:var(--edit);border:2px dashed var(--edit);margin-block:4px;font-size:18px}
+.stage-body{padding-block:40px 64px;display:flex;flex-direction:column;gap:44px}
+.stage-meta{font-weight:600;color:var(--muted)}
+.round{display:flex;flex-direction:column;gap:20px}
+.round-head{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px 16px;border-bottom:1px solid var(--rule);padding-bottom:10px}
+.round-title{font-family:var(--display);font-weight:800;font-size:30px;line-height:1.1;text-transform:uppercase}
+.locked{border:2px dashed var(--ph-line);padding:28px;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:20px}
+.locked-text{display:flex;gap:16px;align-items:flex-start;flex:1 1 320px;min-width:0}
+.locked-text .ic{color:var(--accent-ink);flex-shrink:0}
+.locked-title{font-family:var(--display);font-weight:800;font-size:26px;line-height:1.1;text-transform:uppercase}
+.locked-sub{color:var(--muted)}
+
+/* Match cards */
+.m-wrap{display:flex;flex-direction:column;gap:10px;min-width:0}
+.m-card{display:flex;flex-direction:column;gap:10px;color:var(--ink);text-decoration:none;position:relative}
+.m-card:hover{color:var(--ink)}
+.m-card:hover .thumb{outline:3px solid var(--accent);outline-offset:-3px}
+.thumb{aspect-ratio:16/9;max-width:100%;background:var(--thumb);position:relative;overflow:hidden;display:flex;align-items:center;gap:16px;padding:18px 22px}
+.thumb>img.custom{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.thumb-names{flex:1;min-width:0;display:flex;flex-direction:column}
+.thumb-team{font-family:var(--display);font-weight:800;font-size:clamp(26px,2.8vw,36px);line-height:.95;text-transform:uppercase;overflow-wrap:anywhere}
+.thumb-vs{font-family:var(--display);font-style:italic;font-weight:600;font-size:20px;line-height:1.2;color:var(--accent-ink)}
+.thumb-logos{display:flex;flex-direction:column;gap:10px;margin-bottom:26px}
+.bo-tag{position:absolute;right:0;bottom:0;background:var(--inv);color:var(--inv-ink);font-family:var(--display);font-weight:800;font-size:17px;letter-spacing:.06em;padding:5px 12px}
+.m-cap{display:flex;justify-content:space-between;gap:12px;font-weight:500;font-size:15px;color:var(--muted)}
+.m-cap span:first-child{min-width:0;overflow-wrap:anywhere}
+.watched-chip{position:absolute;left:0;top:0;z-index:1;background:var(--accent);color:var(--on-accent);font-weight:600;font-size:12px;letter-spacing:.12em;text-transform:uppercase;padding:4px 10px}
+.logo{display:flex;align-items:center;justify-content:center;overflow:hidden;background:var(--raised);flex-shrink:0}
+.logo>img{width:100%;height:100%;object-fit:contain;padding:4px}
+.logo-sm{width:52px;height:52px}
+.logo-md{width:56px;height:56px}
+.monogram{font-family:var(--display);font-weight:800;text-transform:uppercase;color:var(--muted);line-height:1}
+.logo-sm .monogram{font-size:18px}
+.logo-md .monogram{font-size:20px}
+
+/* Player page */
+.player-page{padding-block:28px 64px;display:flex;flex-direction:column;gap:28px}
+.player-row{display:flex;flex-wrap:wrap;gap:32px;align-items:flex-start}
+.player-col{flex:999 1 640px;min-width:0;display:flex;flex-direction:column}
+.player{background:#000;display:flex;flex-direction:column}
+.video-frame{position:relative;aspect-ratio:16/9;max-width:100%;background:#000;overflow:hidden}
+.video-frame iframe,#yt-host{position:absolute;inset:0;width:100%;height:100%;border:0}
+.cover{position:absolute;inset:0;z-index:2;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;padding:24px;text-align:center;background:#0B0C0E;color:#F2EFE8;cursor:pointer}
+.cover.clear{background:transparent}
+.cover.clear.mask-top::before{content:"";position:absolute;left:0;right:0;top:0;height:16%;background:#0B0C0E}
+.cover-eyebrow{font-weight:600;font-size:14px;letter-spacing:.16em;text-transform:uppercase;color:#B4B0A7}
+.cover-title{font-family:var(--display);font-weight:800;font-size:clamp(1.6rem,4vw,2.75rem);line-height:1;text-transform:uppercase;max-width:20em;font-variant-numeric:tabular-nums}
+.cover-sub{color:#CFCBC2;max-width:34em;font-size:16px}
+.big-play{width:88px;height:88px;border-radius:50%;background:var(--accent);color:#FFFFFF;border:none;display:inline-flex;align-items:center;justify-content:center;cursor:pointer}
+.big-play:hover{background:var(--accent-hover)}
+.big-play .ic{margin-left:6px}
+.resume{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:4px 16px;color:#CFCBC2;font-size:15px}
+.spinner{width:40px;height:40px;border:4px solid rgba(242,239,232,.25);border-top-color:#F2EFE8;border-radius:50%;animation:spin 1s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+@media (prefers-reduced-motion: reduce){.spinner{animation-duration:3s}}
+.controls{background:var(--controls);color:#F2EFE8;display:flex;flex-wrap:wrap;align-items:center;gap:2px;padding:6px 10px}
+.ctl{min-width:48px;height:44px;padding:0 6px;background:transparent;border:none;color:#F2EFE8;font-family:var(--display);font-weight:800;font-size:18px;cursor:pointer;display:inline-flex;align-items:center;justify-content:center}
+.ctl:hover:not(:disabled){background:rgba(255,255,255,.1)}
+.ctl:disabled{opacity:.4;cursor:default}
+.controls :focus-visible{outline-color:#F2EFE8}
+.spacer{flex:1}
+.elapsed{font-family:var(--display);font-weight:600;font-size:18px;letter-spacing:.04em;padding:0 8px;font-variant-numeric:tabular-nums}
+.len-hidden{display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:#B4B0A7;padding:0 8px}
+.vol{width:96px;accent-color:#C8372D}
+.player:fullscreen{width:100%;height:100%}
+.player:fullscreen .video-frame{flex:1;aspect-ratio:auto}
+.player:-webkit-full-screen{width:100%;height:100%}
+.player:-webkit-full-screen .video-frame{flex:1;aspect-ratio:auto}
+.match-head{display:flex;flex-direction:column;gap:8px;padding-top:22px}
+.match-title{font-family:var(--display);font-weight:800;font-size:clamp(2.2rem,5vw,3.5rem);line-height:.95;text-transform:uppercase;overflow-wrap:anywhere}
+.match-title .vs{font-style:italic;font-weight:600;font-size:.55em;color:var(--accent-ink);text-transform:none}
+.maps{flex:1 1 300px;min-width:0;display:flex;flex-direction:column;gap:14px}
+.maps-head{display:flex;justify-content:space-between;align-items:baseline;gap:8px}
+.maps-title{font-family:var(--display);font-weight:800;font-size:30px;text-transform:uppercase}
+.map-list{display:flex;flex-direction:column;gap:8px}
+.map-btn{display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:60px;padding:10px 18px;background:var(--raised);color:var(--ink);border:2px solid var(--frame);text-decoration:none}
+.map-btn:hover{color:var(--ink);border-color:var(--accent-ink)}
+.map-btn[aria-current="true"]{background:var(--inv);color:var(--inv-ink);border-color:var(--inv)}
+.map-label{font-family:var(--display);font-weight:800;font-size:26px;line-height:1.1;text-transform:uppercase}
+.map-state{font-size:13px;font-weight:600;letter-spacing:.1em;text-transform:uppercase}
+.more{display:flex;flex-direction:column;gap:20px;border-top:2px solid var(--strong);padding-top:28px}
+.notfound{padding-block:64px;display:flex;flex-direction:column;gap:16px;align-items:flex-start}
+
+/* Edit mode */
+.edit-bar{position:sticky;top:env(safe-area-inset-top,0px);z-index:40;background:var(--edit-bar);color:#FFFFFF}
+.edit-mode body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:41;background:var(--edit-bar)}
+.edit-bar-in{display:flex;flex-wrap:wrap;align-items:center;gap:8px 20px;padding-block:10px}
+.eb-info{display:flex;flex-wrap:wrap;align-items:baseline;gap:2px 12px;min-width:0}
+.eb-title{font-family:var(--display);font-weight:800;font-size:20px;letter-spacing:.06em;text-transform:uppercase}
+.eb-status{font-size:14px;color:#DCE7F5}
+.eb-actions{display:flex;flex-wrap:wrap;gap:8px;margin-left:auto}
+.eb-btn{min-height:40px;padding:6px 14px;background:transparent;color:#FFFFFF;border:1px solid rgba(255,255,255,.55);font-weight:600;font-size:14px;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center}
+.eb-btn:hover{background:rgba(255,255,255,.12);color:#FFFFFF}
+.eb-btn.primary{background:#FFFFFF;color:#1F4F8A;border-color:#FFFFFF}
+.eb-btn.primary:hover{background:#DCE7F5;color:#1F4F8A}
+.eb-help{width:100%;font-size:13px;color:#DCE7F5}
+.edit-bar :focus-visible{outline-color:#FFFFFF}
+.editable{outline:1px dashed var(--edit);outline-offset:4px;cursor:text;min-width:3ch}
+span.editable{display:inline-block}
+.editable:hover{background:var(--edit-soft)}
+.editable:focus{outline:2px solid var(--edit);background:var(--edit-soft)}
+.editable:empty::before{content:attr(data-placeholder);color:var(--muted);font-style:italic;font-weight:500;text-transform:none;letter-spacing:0}
+.band .editable:empty::before{color:var(--band-muted)}
+.edit-panel{border:1px dashed var(--edit);background:var(--edit-soft);padding:16px;display:flex;flex-wrap:wrap;gap:20px 32px;align-items:flex-start}
+.edit-panel p{flex-basis:100%}
+.mini-btn{min-height:40px;padding:6px 14px;background:var(--raised);color:var(--edit);border:1px solid var(--edit);font-family:var(--body);font-weight:600;font-size:14px;letter-spacing:0;text-transform:none;cursor:pointer;display:inline-flex;align-items:center;gap:6px}
+.mini-btn:hover:not(:disabled){background:var(--edit-soft)}
+.mini-btn.danger{color:var(--accent-ink);border-color:var(--accent-ink)}
+.mini-btn:disabled{opacity:.45;cursor:not-allowed}
+.add-tile{min-height:180px;border:2px dashed var(--edit);background:var(--edit-soft);color:var(--edit);font-family:var(--display);font-weight:800;font-size:24px;letter-spacing:.04em;text-transform:uppercase;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:16px}
+.add-tile.slim{min-height:64px;width:100%}
+.add-tile:hover{background:var(--raised)}
+.img-field{display:flex;flex-direction:column;gap:8px;align-items:flex-start}
+.img-slot{position:relative;overflow:hidden;background:var(--thumb)}
+.img-slot>img{width:100%;height:100%;object-fit:cover}
+.img-field>.img-slot{outline:1px dashed var(--edit);outline-offset:3px}
+.img-empty{display:flex;align-items:center;justify-content:center;width:100%;height:100%;color:var(--ph-ink);font-weight:600;font-size:14px;letter-spacing:.04em;text-align:center;padding:8px}
+.check{display:inline-flex;align-items:center;gap:10px;min-height:40px;font-weight:500;font-size:15px;cursor:pointer}
+.check input{width:18px;height:18px;accent-color:var(--edit);margin:0;flex-shrink:0}
+.field{display:flex;flex-direction:column;gap:6px;min-width:0}
+.field>label{font-weight:600;font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.input{width:100%;min-height:44px;padding:8px 12px;background:var(--raised);color:var(--ink);border:1px solid var(--frame);border-radius:0}
+.input:disabled{opacity:.5}
+.form-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(200px,100%),1fr));gap:14px}
+.maps-edit{display:flex;flex-direction:column;gap:12px}
+.map-edit{border:1px solid var(--rule);padding:14px;display:flex;flex-direction:column;gap:12px}
+.map-edit-head{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:8px}
+.map-edit-head strong{font-family:var(--display);font-weight:800;font-size:22px;text-transform:uppercase}
+.section-label{font-family:var(--display);font-weight:800;font-size:22px;text-transform:uppercase;margin-top:6px}
+.thumb-edit{display:flex;flex-direction:column;gap:8px}
+.thumb-prev{width:min(320px,100%);aspect-ratio:16/9;background:var(--thumb);display:flex;align-items:center;justify-content:center;overflow:hidden;padding:8px}
+.thumb-prev>img{width:100%;height:100%;object-fit:cover}
+.team-list{display:flex;flex-direction:column}
+.team-row{display:grid;grid-template-columns:56px minmax(0,1fr);gap:8px 14px;align-items:center;padding:12px 0;border-bottom:1px solid var(--rule)}
+.team-row>.row,.team-row>.alias-field{grid-column:2}
+.notice{margin-top:24px;align-items:center}
+
+/* Dialogs and toast */
+.dlg{border:none;padding:0;background:var(--paper);color:var(--ink);width:min(760px,calc(100vw - 32px));max-height:calc(100dvh - 48px);box-shadow:0 24px 64px rgba(0,0,0,.4)}
+.dlg[open]{display:flex;flex-direction:column}
+.dlg-sm{width:min(480px,calc(100vw - 32px))}
+.dlg::backdrop{background:rgba(10,11,13,.6)}
+.dlg-head{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:18px 24px;border-bottom:2px solid var(--strong)}
+.dlg-title{font-family:var(--display);font-weight:800;font-size:30px;line-height:1.1;text-transform:uppercase}
+.dlg-body{padding:20px 24px;display:flex;flex-direction:column;gap:16px;overflow:auto;min-height:0}
+.dlg-foot{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:12px;padding:16px 24px;border-top:1px solid var(--rule)}
+.icon-close{width:44px;height:44px;flex-shrink:0;background:transparent;border:1px solid var(--rule);color:var(--ink);cursor:pointer;display:inline-flex;align-items:center;justify-content:center}
+.toast{position:fixed;left:50%;bottom:calc(24px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);z-index:60;background:var(--inv);color:var(--inv-ink);padding:12px 18px;font-weight:600;max-width:calc(100vw - 32px);box-shadow:0 8px 24px rgba(0,0,0,.25)}
+
+@media (max-width:640px){
+  .main-nav{gap:0 18px;font-size:14px}
+  .sf-badge span{display:none}
+  .len-hidden span,.vol{display:none}
+  .hero{padding-block:36px}
+  .locked{padding:20px}
+}
+</style>
+</head>
+<body>
+<div id="edit-bar" class="edit-bar" hidden>
+  <div class="wrap edit-bar-in">
+    <div class="eb-info">
+      <strong class="eb-title">Edit mode</strong>
+      <span id="edit-status" class="eb-status">Changes are saved in this browser as you go.</span>
+    </div>
+    <div class="eb-actions">
+      <button type="button" class="eb-btn" id="eb-toggle">Preview</button>
+      <button type="button" class="eb-btn" id="eb-teams">Teams</button>
+      <button type="button" class="eb-btn" id="eb-restore">Open a data file</button>
+      <input type="file" id="eb-restore-file" accept=".json,application/json" class="sr-only" tabindex="-1" aria-hidden="true">
+      <button type="button" class="eb-btn" id="eb-discard">Discard changes</button>
+      <button type="button" class="eb-btn primary" id="eb-download">Download data.json</button>
+      <a class="eb-btn" id="eb-exit" href="./">Leave edit mode</a>
+    </div>
+    <p class="eb-help">Your changes stay in this browser until you download <code>data.json</code> and upload it to your GitHub repository, replacing the old one. Videos the watcher finds keep arriving either way.</p>
+  </div>
+</div>
+
+<header class="site-header">
+  <div class="wrap header-in">
+    <a class="brand" id="brand" href="#/">Spoiler-Free CS2</a>
+    <nav class="main-nav" aria-label="Main">
+      <a href="#/" data-nav="home">Home</a>
+      <a href="#/tournaments" data-nav="tournaments">Tournaments</a>
+      <a href="#/how" data-nav="how">How it works</a>
+    </nav>
+    <div class="header-tools">
+      <button type="button" class="icon-btn" id="theme-btn" aria-label="Switch to dark mode"></button>
+      <span class="sf-badge"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><line x1="3" y1="3" x2="21" y2="21"></line></svg><span>Spoiler-free</span></span>
+    </div>
+  </div>
+</header>
+
+<main id="app"></main>
+<footer class="site-footer" id="footer"></footer>
+
+<dialog id="dlg" class="dlg"></dialog>
+<dialog id="dlg-teams" class="dlg"></dialog>
+<dialog id="dlg-confirm" class="dlg dlg-sm"></dialog>
+<div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
+<noscript><p class="wrap">This site needs JavaScript turned on to show tournaments and play videos.</p></noscript>
+
+<script type="application/json" id="site-data">{"version":1,"site":{"name":"Spoiler-Free CS2","heroText":"Every match from the first stage to the grand final. No scores, no video lengths, nothing that gives the result away.","howTitle":"How spoiler-free works","how":[{"title":"No scores","text":"Results never show up in titles, thumbnails or anywhere on the page."},{"title":"No video lengths","text":"Run times and progress bars stay hidden, so a long map can't tip you off."},{"title":"Every map listed","text":"Each series shows all of its possible maps, so you can't count how many were played."},{"title":"Later rounds locked","text":"Matchups that would give away earlier results stay hidden until you open them."}],"footer":"Videos are played from YouTube.","featuredId":"ex-t1","example":true},"teams":[{"id":"ex-a","name":"Team One","logo":""},{"id":"ex-b","name":"Team Two","logo":""},{"id":"ex-c","name":"Team Three","logo":""},{"id":"ex-d","name":"Team Four","logo":""},{"id":"ex-e","name":"Team Five","logo":""},{"id":"ex-f","name":"Team Six","logo":""},{"id":"ex-g","name":"Team Seven","logo":""},{"id":"ex-h","name":"Team Eight","logo":""}],"tournaments":[{"id":"ex-t1","name":"Example Tournament","year":"2026","dates":"","location":"","teamsText":"8 teams","logo":"","art":"","stages":[{"id":"ex-s1","name":"Group Stage","info":"Swiss · Best of 3","rounds":[{"id":"ex-r1","name":"Round 1","locked":false,"matches":[{"id":"ex-m1","a":"ex-a","b":"ex-b","bo":3,"date":"Day 1"},{"id":"ex-m2","a":"ex-c","b":"ex-d","bo":3,"date":"Day 1"},{"id":"ex-m3","a":"ex-e","b":"ex-f","bo":3,"date":"Day 1"},{"id":"ex-m4","a":"ex-g","b":"ex-h","bo":3,"date":"Day 1"}]},{"id":"ex-r2","name":"Round 2","locked":true,"matches":[{"id":"ex-m5","a":"ex-a","b":"ex-c","bo":3,"date":"Day 2"},{"id":"ex-m6","a":"ex-e","b":"ex-g","bo":3,"date":"Day 2"},{"id":"ex-m7","a":"ex-b","b":"ex-d","bo":3,"date":"Day 2"},{"id":"ex-m8","a":"ex-f","b":"ex-h","bo":3,"date":"Day 2"}]}]},{"id":"ex-s2","name":"Playoffs","info":"Single elimination · Best of 3","rounds":[{"id":"ex-r3","name":"Semi-finals","locked":true,"matches":[{"id":"ex-m9","a":"ex-a","b":"ex-e","bo":3,"date":"Day 3"},{"id":"ex-m10","a":"ex-c","b":"ex-g","bo":3,"date":"Day 3"}]},{"id":"ex-r4","name":"Grand final","locked":true,"matches":[{"id":"ex-m11","a":"ex-a","b":"ex-c","bo":5,"date":"Day 4"}]}]}]}]}</script>
+
+<script>
+(function () {
+'use strict';
+
+/* Where the content comes from:
+   data.json  - yours: tournaments, stages, teams, text and pictures (edit mode saves this)
+   auto.json  - the video watcher's: videos it found, plus matches and teams it created
+   The two are merged when the page loads. Anything you set in data.json wins. */
+
+const $ =(sel, root) => (root || document).querySelector(sel);
+const EDIT = new URLSearchParams(location.search).has('edit');
+
+/* ---------- small helpers ---------- */
+function h(tag, props, ...kids) {
+  const el = document.createElement(tag);
+  if (props) {
+    for (const k in props) {
+      const v = props[k];
+      if (v === null || v === undefined || v === false) continue;
+      if (k === 'class') el.className = v;
+      else if (k.slice(0, 2) === 'on' && typeof v === 'function') el.addEventListener(k.slice(2).toLowerCase(), v);
+      else if (v === true) el.setAttribute(k, '');
+      else el.setAttribute(k, String(v));
+    }
+  }
+  addKids(el, kids);
+  return el;
+}
+function addKids(el, kids) {
+  for (const kid of kids) {
+    if (kid === null || kid === undefined || kid === false) continue;
+    if (Array.isArray(kid)) addKids(el, kid);
+    else el.append(kid.nodeType ? kid : document.createTextNode(String(kid)));
+  }
+}
+const str = v => (v === null || v === undefined) ? '' : String(v);
+const clone = o => JSON.parse(JSON.stringify(o));
+const uid = p => p + '-' + Math.random().toString(36).slice(2, 8) + Date.now().toString(36).slice(-4);
+function plural(n, one, many) { return n + ' ' + (n === 1 ? one : (many || one + 's')); }
+function fmt(sec) {
+  sec = Math.max(0, Math.floor(sec || 0));
+  const hh = Math.floor(sec / 3600), mm = Math.floor(sec % 3600 / 60), ss = sec % 60;
+  return (hh ? hh + ':' + String(mm).padStart(2, '0') : String(mm)) + ':' + String(ss).padStart(2, '0');
+}
+function toSeconds(v) {
+  v = str(v).trim().toLowerCase();
+  if (!v) return 0;
+  if (/^\d+(\.\d+)?$/.test(v)) return Math.floor(+v);
+  const m = v.match(/^(?:(\d+)h)?(?:(\d+)m)?(?:(\d+)s)?$/);
+  if (m && (m[1] || m[2] || m[3])) return (+m[1] || 0) * 3600 + (+m[2] || 0) * 60 + (+m[3] || 0);
+  if (/^\d+(:\d{1,2}){1,2}$/.test(v)) return v.split(':').reduce((a, n) => a * 60 + (+n), 0);
+  return 0;
+}
+function parseYouTube(input) {
+  const s = str(input).trim();
+  if (!s) return { id: '', start: 0 };
+  if (/^[\w-]{11}$/.test(s)) return { id: s, start: 0 };
+  let u;
+  try { u = new URL(/^https?:\/\//i.test(s) ? s : 'https://' + s); } catch (e) { return { id: '', start: 0 }; }
+  const host = u.hostname.replace(/^(www|m|music)\./, '');
+  let id = '';
+  if (host === 'youtu.be') id = u.pathname.slice(1, 12);
+  else if (/(^|\.)youtube(-nocookie)?\.com$/.test(host)) {
+    id = u.searchParams.get('v') || '';
+    if (!id) { const m = u.pathname.match(/\/(embed|live|shorts|v)\/([\w-]{11})/); if (m) id = m[2]; }
+  }
+  if (!/^[\w-]{11}$/.test(id)) return { id: '', start: 0 };
+  return { id, start: toSeconds(u.searchParams.get('t') || u.searchParams.get('start') || '') };
+}
+function escHtml(s) { return String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c])); }
+function ago(ts) {
+  const s = Math.round((Date.now() - ts) / 1000);
+  if (s < 60) return 'just now';
+  const m = Math.round(s / 60); if (m < 60) return plural(m, 'minute') + ' ago';
+  const hr = Math.round(m / 60); if (hr < 24) return plural(hr, 'hour') + ' ago';
+  return plural(Math.round(hr / 24), 'day') + ' ago';
+}
+
+/* ---------- per-visitor storage (watched, revealed rounds, positions, theme) ---------- */
+const store = {
+  get(k, d) { try { const v = localStorage.getItem('sf:' + k); return v === null ? d : JSON.parse(v); } catch (e) { return d; } },
+  set(k, v) { try { localStorage.setItem('sf:' + k, JSON.stringify(v)); } catch (e) { /* storage unavailable */ } }
+};
+
+/* ---------- draft storage for edit mode (IndexedDB holds pictures comfortably) ---------- */
+const idb = {
+  open() {
+    return new Promise((res, rej) => {
+      const r = indexedDB.open('spoiler-free-site', 1);
+      r.onupgradeneeded = () => r.result.createObjectStore('kv');
+      r.onsuccess = () => res(r.result);
+      r.onerror = () => rej(r.error);
+    });
+  },
+  async run(mode, fn) {
+    const db = await this.open();
+    return new Promise((res, rej) => {
+      const tx = db.transaction('kv', mode);
+      const q = fn(tx.objectStore('kv'));
+      tx.oncomplete = () => res(q && q.result);
+      tx.onerror = () => rej(tx.error);
+      tx.onabort = () => rej(tx.error);
+    });
+  },
+  async get(k) { try { return await this.run('readonly', s => s.get(k)); } catch (e) { return undefined; } },
+  async set(k, v) { try { await this.run('readwrite', s => s.put(v, k)); return true; } catch (e) { return false; } },
+  async del(k) { try { await this.run('readwrite', s => s.delete(k)); return true; } catch (e) { return false; } }
+};
+
+/* ---------- icons ---------- */
+const ICONS = {
+  play: '<polygon points="7 4 20 12 7 20 7 4"></polygon>',
+  pause: '<line x1="9" y1="5" x2="9" y2="19"></line><line x1="15" y1="5" x2="15" y2="19"></line>',
+  vol: '<polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M15.5 8.5a5 5 0 0 1 0 7"></path>',
+  mute: '<polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><line x1="22" y1="9" x2="16" y2="15"></line><line x1="16" y1="9" x2="22" y2="15"></line>',
+  fs: '<path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"></path>',
+  eyeoff: '<path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><line x1="3" y1="3" x2="21" y2="21"></line>',
+  moon: '<path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"></path>',
+  sun: '<circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"></path>',
+  lock: '<rect x="5" y="11" width="14" height="10" rx="2"></rect><path d="M8 11V7a4 4 0 0 1 8 0v4"></path>',
+  x: '<line x1="6" y1="6" x2="18" y2="18"></line><line x1="18" y1="6" x2="6" y2="18"></line>'
+};
+function icon(name, size, fill) {
+  const span = document.createElement('span');
+  span.className = 'ic';
+  span.setAttribute('aria-hidden', 'true');
+  span.innerHTML = '<svg width="' + (size || 22) + '" height="' + (size || 22) + '" viewBox="0 0 24 24" fill="' + (fill || 'none') + '" stroke="' + (fill ? 'none' : 'currentColor') + '" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">' + ICONS[name] + '</svg>';
+  return span;
+}
+
+/* ---------- data ---------- */
+const DEFAULT_HOW = [
+  { title: 'No scores', text: 'Results never show up in titles, thumbnails or anywhere on the page.' },
+  { title: 'No video lengths', text: 'Run times and progress bars stay hidden, so a long map can’t tip you off.' },
+  { title: 'Every map listed', text: 'Each series shows all of its possible maps, so you can’t count how many were played.' },
+  { title: 'Later rounds locked', text: 'Matchups that would give away earlier results stay hidden until you open them.' }
+];
+const blankMap = () => ({ name: '', video: '', start: '', notPlayed: false });
+const arr = v => Array.isArray(v) ? v : [];
+function normMatch(m) {
+  const bo = [1, 3, 5].includes(+m.bo) ? +m.bo : 3;
+  const maps = arr(m.maps).slice(0, bo).map(x => ({ name: str(x && x.name), video: str(x && x.video), start: str(x && x.start), notPlayed: !!(x && x.notPlayed) }));
+  while (maps.length < bo) maps.push(blankMap());
+  return { id: str(m.id), a: str(m.a), b: str(m.b), bo, date: str(m.date), thumb: str(m.thumb), maps };
+}
+function normalize(d) {
+  d = (d && typeof d === 'object') ? d : {};
+  const s = d.site || {};
+  const site = {
+    name: str(s.name) || 'Spoiler-Free CS2', heroText: str(s.heroText), howTitle: str(s.howTitle) || 'How spoiler-free works',
+    how: arr(s.how).length ? arr(s.how).map(x => ({ title: str(x && x.title), text: str(x && x.text) })) : clone(DEFAULT_HOW),
+    footer: str(s.footer), featuredId: str(s.featuredId), example: !!s.example
+  };
+  const teams = arr(d.teams).filter(x => x && x.id).map(x => ({ id: str(x.id), name: str(x.name), logo: str(x.logo), aliases: arr(x.aliases).map(str).filter(Boolean) }));
+  const tournaments = arr(d.tournaments).filter(t => t && t.id).map(t => ({
+    id: str(t.id), name: str(t.name), year: str(t.year), dates: str(t.dates), location: str(t.location),
+    teamsText: str(t.teamsText), logo: str(t.logo), art: str(t.art),
+    stages: arr(t.stages).filter(x => x && x.id).map(st => ({
+      id: str(st.id), name: str(st.name), info: str(st.info),
+      rounds: arr(st.rounds).filter(x => x && x.id).map(r => ({
+        id: str(r.id), name: str(r.name), locked: !!r.locked,
+        matches: arr(r.matches).filter(x => x && x.id).map(normMatch)
+      }))
+    }))
+  }));
+  return { version: 1, updatedAt: str(d.updatedAt), hiddenAuto: arr(d.hiddenAuto).map(str), site, teams, tournaments };
+}
+function readEmbedded() { try { return JSON.parse($('#site-data').textContent); } catch (e) { return {}; } }
+
+/* Names are compared loosely: case, spaces, punctuation and a trailing "s" are ignored,
+   so "Quarter-finals" matches "Quarterfinal". */
+const looseName = s => str(s).toLowerCase().replace(/[^a-z0-9]+/g, '').replace(/s$/, '');
+
+function roundRank(name) {
+  const n = looseName(name);
+  let m = n.match(/^roundof(\d+)$/);
+  if (m) return 100 - Math.log2(+m[1] || 2);
+  m = n.match(/^(?:round|day)(\d+)$/);
+  if (m) return +m[1];
+  if (n.indexOf('opening') === 0) return 1;
+  if (n.indexOf('winner') === 0) return 2;
+  if (n.indexOf('elimination') === 0) return 2.5;
+  if (n.indexOf('decider') === 0) return 3;
+  if (n.indexOf('quarterfinal') === 0) return 200;
+  if (n.indexOf('semifinal') === 0) return 300;
+  if (n.indexOf('thirdplace') >= 0) return 350;
+  if (n.indexOf('bracketfinal') >= 0) return 380;
+  if (n === 'final') return 450;
+  if (n.indexOf('grandfinal') === 0) return 500;
+  return -1;
+}
+
+/* Adds what the watcher found (auto.json) into your data, without overwriting anything you set. */
+function mergeAuto(d, auto) {
+  if (!auto || typeof auto !== 'object') return d;
+  const hidden = new Set(d.hiddenAuto);
+  arr(auto.teams).forEach(t => {
+    if (!t || !t.id || hidden.has(str(t.id)) || d.teams.some(x => x.id === str(t.id))) return;
+    d.teams.push({ id: str(t.id), name: str(t.name), logo: '', aliases: arr(t.aliases).map(str).filter(Boolean) });
+  });
+  const all = new Map();
+  d.tournaments.forEach(t => t.stages.forEach(s => s.rounds.forEach(r => r.matches.forEach(m => all.set(m.id, m)))));
+  arr(auto.matches).forEach(am => {
+    if (!am || !am.id || hidden.has(str(am.id)) || all.has(str(am.id))) return;
+    const t = d.tournaments.find(x => x.id === str(am.tournamentId)) || d.tournaments.find(x => looseName(x.name) === looseName(am.tournament));
+    if (!t) return;
+    const stageName = str(am.stage) || 'Matches';
+    let s = t.stages.find(x => looseName(x.name) === looseName(stageName));
+    if (!s) { s = { id: 'auto-s-' + looseName(t.id + '-' + stageName), name: stageName, info: '', rounds: [] }; t.stages.push(s); }
+    const roundName = str(am.round) || 'New matches';
+    let r = s.rounds.find(x => looseName(x.name) === looseName(roundName));
+    if (!r) {
+      const isFirst = t.stages.indexOf(s) === 0 && s.rounds.length === 0;
+      r = { id: 'auto-r-' + looseName(s.id + '-' + roundName), name: roundName, locked: !isFirst, matches: [] };
+      // Put well-known rounds in their natural place (Quarter-finals before Semi-finals, and so on).
+      const rank = roundRank(roundName);
+      const at = rank >= 0 ? s.rounds.findIndex(x => roundRank(x.name) > rank) : -1;
+      if (at >= 0) s.rounds.splice(at, 0, r); else s.rounds.push(r);
+    }
+    const m = normMatch(am);
+    r.matches.push(m);
+    all.set(m.id, m);
+  });
+  const vids = (auto.videos && typeof auto.videos === 'object') ? auto.videos : {};
+  Object.keys(vids).forEach(mid => {
+    const m = all.get(mid), v = vids[mid];
+    if (!m || !v) return;
+    arr(v.maps).forEach((av, i) => {
+      if (!av || i >= m.maps.length) return;
+      const dm = m.maps[i];
+      if (!dm.name && av.name) dm.name = str(av.name);
+      if (dm.video) return;
+      if (av.video) { dm.video = str(av.video); if (!dm.start) dm.start = str(av.start); dm.notPlayed = false; }
+      else if (av.notPlayed) dm.notPlayed = true;
+    });
+  });
+  return d;
+}
+
+let AUTO = null;
+let BASE = normalize(readEmbedded());
+let PUBLISHED = clone(BASE);
+let data = clone(PUBLISHED);
+
+/* On a web host, load data.json and auto.json. Opened as a file, the built-in example is used. */
+async function fetchJson(url) {
+  const ctrl = new AbortController();
+  const timer = setTimeout(() => ctrl.abort(), 6000);
+  try {
+    const r = await fetch(url, { cache: 'no-cache', signal: ctrl.signal });
+    if (!r.ok) return null;
+    return await r.json();
+  } catch (e) { return null; } finally { clearTimeout(timer); }
+}
+async function loadSources() {
+  if (!/^https?:$/.test(location.protocol)) return;
+  const [d, a] = await Promise.all([fetchJson('data.json'), fetchJson('auto.json')]);
+  if (d && typeof d === 'object') BASE = normalize(d);
+  AUTO = (a && typeof a === 'object') ? a : null;
+  PUBLISHED = mergeAuto(clone(BASE), AUTO);
+  data = clone(PUBLISHED);
+}
+let showControls = true;
+let homeYear = 'all';
+let autoplayNext = false;
+let teamsChangedInMatch = false;
+let P = null; // the active video player
+const editing = () => EDIT && showControls;
+
+const findT = id => data.tournaments.find(t => t.id === id);
+const team = id => data.teams.find(x => x.id === id) || null;
+const teamName = id => { const t = team(id); return (t && t.name) || 'TBD'; };
+function findMatch(mid) {
+  for (const t of data.tournaments) for (const s of t.stages) for (const rd of s.rounds) for (const m of rd.matches) if (m.id === mid) return { t, s, rd, m };
+  return null;
+}
+function findRound(rd) {
+  for (const t of data.tournaments) for (const s of t.stages) if (s.rounds.includes(rd)) return { t, s };
+  return null;
+}
+const countMatches = t => t.stages.reduce((n, s) => n + s.rounds.reduce((k, r) => k + r.matches.length, 0), 0);
+function countTeamUses(id) {
+  let n = 0;
+  data.tournaments.forEach(t => t.stages.forEach(s => s.rounds.forEach(r => r.matches.forEach(m => { if (m.a === id || m.b === id) n++; }))));
+  return n;
+}
+function firstMatch(t) { for (const s of t.stages) for (const r of s.rounds) if (r.matches.length) return r.matches[0]; return null; }
+function moveIn(list, item, d) {
+  const i = list.indexOf(item), j = i + d;
+  if (i < 0 || j < 0 || j >= list.length) return;
+  list.splice(i, 1); list.splice(j, 0, item); commit();
+}
+function setRevealed(id, on) { const r = store.get('revealed', {}); if (on) r[id] = true; else delete r[id]; store.set('revealed', r); }
+function resumeTime(mid, i) { return store.get('pos', {})[mid + ':' + i] || 0; }
+function saveResume(mid, i, t) { const p = store.get('pos', {}); p[mid + ':' + i] = Math.floor(t); store.set('pos', p); }
+function clearResume(mid, i) { const p = store.get('pos', {}); delete p[mid + ':' + i]; store.set('pos', p); }
+
+/* ---------- saving (edit mode) ---------- */
+let saveTimer = null;
+function setStatus(msg) { const el = $('#edit-status'); if (el) el.textContent = msg; }
+function scheduleSave() {
+  if (!EDIT) return;
+  clearTimeout(saveTimer);
+  setStatus('Saving…');
+  saveTimer = setTimeout(async () => {
+    const ok = await idb.set('draft', { savedAt: Date.now(), data });
+    setStatus(ok ? 'All changes saved in this browser.' : 'Couldn’t save in this browser. Use “Back up data” so you don’t lose your work.');
+  }, 400);
+}
+function commit() { scheduleSave(); rerender(); }
+
+let toastTimer = null;
+function toast(msg) {
+  const el = $('#toast');
+  el.textContent = msg; el.hidden = false;
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => { el.hidden = true; }, 3200);
+}
+
+/* ---------- pictures ---------- */
+function readImage(file, kind) {
+  return new Promise((resolve, reject) => {
+    if (!file.type.startsWith('image/')) return reject(new Error('not an image'));
+    if (file.type === 'image/svg+xml') {
+      const fr = new FileReader();
+      fr.onload = () => resolve(fr.result); fr.onerror = () => reject(fr.error);
+      return fr.readAsDataURL(file);
+    }
+    const url = URL.createObjectURL(file);
+    const img = new Image();
+    img.onload = () => {
+      const max = kind === 'logo' ? 320 : 1600;
+      const sc = Math.min(1, max / Math.max(img.naturalWidth, img.naturalHeight));
+      const w = Math.max(1, Math.round(img.naturalWidth * sc)), hgt = Math.max(1, Math.round(img.naturalHeight * sc));
+      const c = document.createElement('canvas'); c.width = w; c.height = hgt;
+      c.getContext('2d').drawImage(img, 0, 0, w, hgt);
+      URL.revokeObjectURL(url);
+      let out = c.toDataURL('image/webp', 0.86);
+      if (out.indexOf('data:image/webp') !== 0) out = kind === 'logo' ? c.toDataURL('image/png') : c.toDataURL('image/jpeg', 0.86);
+      resolve(out);
+    };
+    img.onerror = () => { URL.revokeObjectURL(url); reject(new Error('unreadable')); };
+    img.src = url;
+  });
+}
+const BAD_PICTURE = 'That file couldn’t be read as a picture. Try a PNG, JPG, WebP or SVG.';
+
+/* ---------- building blocks ---------- */
+const PLAINTEXT = (() => { try { const d = document.createElement('div'); d.contentEditable = 'plaintext-only'; return d.contentEditable === 'plaintext-only'; } catch (e) { return false; } })();
+
+/* Text that turns into an inline text box in edit mode. */
+function ed(tag, cls, value, onSave, opts) {
+  opts = opts || {};
+  const el = h(tag, { class: cls || null });
+  el.textContent = value || '';
+  if (!editing()) return el;
+  el.classList.add('editable');
+  el.contentEditable = PLAINTEXT ? 'plaintext-only' : 'true';
+  el.setAttribute('role', 'textbox');
+  el.setAttribute('aria-label', opts.label || opts.placeholder || 'Text');
+  el.dataset.placeholder = opts.placeholder || 'Add text';
+  el.addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); el.blur(); } });
+  el.addEventListener('paste', e => {
+    e.preventDefault();
+    const t = (e.clipboardData && e.clipboardData.getData('text/plain')) || '';
+    document.execCommand('insertText', false, t.replace(/\s+/g, ' '));
+  });
+  el.addEventListener('input', () => { onSave(el.textContent.replace(/\s+/g, ' ').trim()); scheduleSave(); });
+  el.addEventListener('blur', () => { if (!el.textContent.trim()) el.textContent = ''; });
+  return el;
+}
+
+/* A picture that gets Upload / Change / Remove buttons in edit mode. */
+function imgSlot(o) {
+  const box = h('div', { class: 'img-slot ' + (o.cls || '') });
+  if (o.src) box.append(h('img', { src: o.src, alt: o.alt || '' }));
+  else box.append(o.fallback ? o.fallback() : h('span', { class: 'img-empty' }, o.empty || 'No picture'));
+  if (!editing()) return box;
+  const input = h('input', { type: 'file', accept: 'image/*', class: 'sr-only', tabindex: '-1', 'aria-hidden': 'true' });
+  input.addEventListener('change', async () => {
+    const f = input.files && input.files[0];
+    input.value = '';
+    if (!f) return;
+    try { o.onChange(await readImage(f, o.kind)); commit(); } catch (e) { toast(BAD_PICTURE); }
+  });
+  const what = o.what || 'picture';
+  return h('div', { class: 'img-field' }, box,
+    h('div', { class: 'row' },
+      h('button', { type: 'button', class: 'mini-btn', onClick: () => input.click() }, (o.src ? 'Change ' : 'Upload ') + what),
+      o.src ? h('button', { type: 'button', class: 'mini-btn', onClick: () => { o.onChange(''); commit(); } }, 'Remove') : null,
+      input));
+}
+function monogram(name) {
+  const letters = str(name).split(/\s+/).filter(Boolean).map(w => w[0]).join('').slice(0, 3).toUpperCase();
+  return h('span', { class: 'monogram', 'aria-hidden': 'true' }, letters || '?');
+}
+function logoBox(tm, cls) {
+  const box = h('div', { class: 'logo ' + cls });
+  box.append(tm && tm.logo ? h('img', { src: tm.logo, alt: '' }) : monogram(tm ? tm.name : ''));
+  return box;
+}
+function artView(t) {
+  if (t.art) return h('img', { src: t.art, alt: '' });
+  if (t.logo) return h('div', { class: 'art-fallback' }, h('img', { class: 'art-logo', src: t.logo, alt: '' }));
+  return h('div', { class: 'art-fallback' }, h('span', { class: 'art-name' }, t.name || 'Tournament'));
+}
+function metaLine(parts) {
+  const vals = parts.filter(Boolean);
+  if (!vals.length) return null;
+  const el = h('div', { class: 'meta' });
+  vals.forEach((v, i) => { if (i) el.append(dot()); el.append(h('span', {}, v)); });
+  return el;
+}
+const dot = () => h('span', { class: 'dot', 'aria-hidden': 'true' }, '·');
+const sep = () => h('span', { 'aria-hidden': 'true' }, '/');
+function field(labelText, control) { return h('div', { class: 'field' }, h('label', { for: control.id }, labelText), control); }
+
+/* ---------- routing ---------- */
+function parseRoute() {
+  const p = location.hash.replace(/^#\/?/, '').split('/').filter(Boolean).map(x => { try { return decodeURIComponent(x); } catch (e) { return x; } });
+  if (p[0] === 't') return { name: 'tournament', tid: p[1], sid: p[2] };
+  if (p[0] === 'match') return { name: 'player', mid: p[1], map: parseInt(p[2] || '0', 10) || 0 };
+  if (p[0] === 'tournaments' || p[0] === 'how') return { name: 'home', section: p[0] };
+  return { name: 'home' };
+}
+function route(keepScroll, initial) {
+  const y = window.scrollY;
+  destroyPlayer();
+  const r = parseRoute();
+  const app = $('#app');
+  app.replaceChildren();
+  if (editing() && data.site.example) app.append(exampleNotice());
+  if (r.name === 'tournament') renderTournament(app, r);
+  else if (r.name === 'player') renderPlayer(app, r);
+  else renderHome(app, r);
+  renderHeader();
+  renderFooter();
+  if (keepScroll) { window.scrollTo(0, y); return; }
+  const sec = r.section && document.getElementById('sec-' + r.section);
+  if (sec) sec.scrollIntoView();
+  else window.scrollTo(0, 0);
+  if (!initial && !editing()) {
+    const h1 = app.querySelector('h1');
+    if (h1) { if (!h1.hasAttribute('tabindex')) h1.setAttribute('tabindex', '-1'); h1.focus({ preventScroll: true }); }
+  }
+}
+function rerender() { route(true); }
+
+function renderHeader() {
+  const name = data.site.name || 'Spoiler-Free CS2';
+  $('#brand').textContent = name;
+  document.title = name;
+  const r = parseRoute();
+  document.querySelectorAll('[data-nav]').forEach(a => {
+    const k = a.dataset.nav;
+    const cur = (k === 'home' && r.name === 'home' && !r.section) ||
+      (k === 'tournaments' && (r.name !== 'home' || r.section === 'tournaments')) ||
+      (k === 'how' && r.section === 'how');
+    if (cur) a.setAttribute('aria-current', 'page'); else a.removeAttribute('aria-current');
+  });
+}
+function renderFooter() {
+  $('#footer').replaceChildren(h('div', { class: 'wrap footer-in' },
+    ed('span', 'footer-brand', data.site.name, v => { data.site.name = v; renderHeader(); }, { label: 'Site name', placeholder: 'Site name' }),
+    ed('span', 'footer-text', data.site.footer, v => { data.site.footer = v; }, { label: 'Footer text', placeholder: 'Footer text' })));
+}
+function exampleNotice() {
+  return h('div', { class: 'wrap' }, h('div', { class: 'edit-panel notice' },
+    h('p', {}, 'This site starts with example content so you can see how it works. Edit it into your own tournament, or clear it and start fresh.'),
+    h('div', { class: 'row' },
+      h('button', { type: 'button', class: 'mini-btn danger', onClick: async () => {
+        if (!(await askConfirm('Delete the example tournament and its teams?', 'Clear example content'))) return;
+        data.tournaments = data.tournaments.filter(t => t.id.indexOf('ex-') !== 0);
+        data.teams = data.teams.filter(t => t.id.indexOf('ex-') !== 0);
+        if (!findT(data.site.featuredId)) data.site.featuredId = '';
+        data.site.example = false;
+        location.hash = '#/'; commit(); toast('Example content cleared');
+      } }, 'Clear example content'),
+      h('button', { type: 'button', class: 'mini-btn', onClick: () => { data.site.example = false; commit(); } }, 'Keep it and hide this note'))));
+}
+
+/* ---------- home ---------- */
+function renderHome(app) {
+  const ts = data.tournaments;
+  const feat = findT(data.site.featuredId) || ts[0] || null;
+  const text = h('div', { class: 'hero-text' });
+  if (feat) {
+    text.append(h('div', { class: 'eyebrow' }, 'Featured tournament'),
+      h('h1', { class: 'hero-title' }, feat.name || 'Untitled tournament'),
+      metaLine([feat.dates, feat.location, feat.teamsText]));
+  } else {
+    text.append(h('div', { class: 'eyebrow' }, 'CS2 tournaments, spoiler-free'), h('h1', { class: 'hero-title' }, data.site.name || 'Spoiler-Free CS2'));
+  }
+  if (editing() || data.site.heroText) text.append(ed('p', 'lede', data.site.heroText, v => { data.site.heroText = v; }, { label: 'Intro text', placeholder: 'Write a short intro for your site' }));
+  const btns = h('div', { class: 'btn-row' });
+  if (feat) {
+    const fm = firstMatch(feat);
+    btns.append(h('a', { class: 'btn btn-accent', href: fm ? '#/match/' + fm.id + '/0' : '#/t/' + feat.id }, fm ? 'Start from match one' : 'Open tournament'));
+  }
+  btns.append(h('a', { class: 'btn btn-outline', href: '#/tournaments' }, 'All tournaments'));
+  text.append(btns);
+  if (editing() && ts.length > 1) {
+    const sel = h('select', { id: 'feat-select', class: 'input' }, ts.map(t => h('option', { value: t.id, selected: feat && t.id === feat.id }, t.name || 'Untitled tournament')));
+    sel.addEventListener('change', () => { data.site.featuredId = sel.value; commit(); });
+    text.append(h('div', { class: 'edit-panel' }, field('Featured on the home page', sel)));
+  }
+  const hero = h('section', { class: 'wrap hero' }, text);
+  if (feat) hero.append(h('div', { class: 'hero-art' }, artView(feat)));
+  app.append(hero);
+
+  // tournament list
+  const years = [...new Set(ts.map(t => t.year.trim()).filter(Boolean))].sort().reverse();
+  if (homeYear !== 'all' && !years.includes(homeYear)) homeYear = 'all';
+  const head = h('div', { class: 'section-head' }, h('h2', { class: 'h2' }, 'All tournaments'));
+  if (years.length > 1) {
+    head.append(h('div', { class: 'chips', role: 'group', 'aria-label': 'Filter by year' },
+      ['all'].concat(years).map(y => h('button', { type: 'button', class: 'chip', 'aria-pressed': String(homeYear === y), onClick: () => { homeYear = y; rerender(); } }, y === 'all' ? 'All' : y))));
+  }
+  const inner = h('div', { class: 'wrap section-in' }, head);
+  const shown = ts.filter(t => homeYear === 'all' || t.year.trim() === homeYear);
+  if (!ts.length && !editing()) inner.append(h('p', { class: 'empty' }, 'No tournaments have been added yet. Check back soon.'));
+  else {
+    const grid = h('div', { class: 'grid' });
+    if (editing()) grid.append(h('button', { type: 'button', class: 'add-tile', onClick: addTournament }, '+ Add tournament'));
+    shown.forEach(t => grid.append(tCard(t)));
+    inner.append(grid);
+  }
+  app.append(h('section', { class: 'section', id: 'sec-tournaments' }, inner));
+
+  // how it works
+  app.append(h('section', { class: 'band', id: 'sec-how' }, h('div', { class: 'wrap band-in' },
+    ed('h2', 'h2', data.site.howTitle, v => { data.site.howTitle = v; }, { label: 'Section title', placeholder: 'Section title' }),
+    h('div', { class: 'how-grid' }, data.site.how.map(it => h('div', { class: 'how-item' },
+      ed('h3', '', it.title, v => { it.title = v; }, { label: 'Point title', placeholder: 'Title' }),
+      ed('p', '', it.text, v => { it.text = v; }, { label: 'Point text', placeholder: 'Short explanation' })))))));
+}
+function tCard(t) {
+  const n = countMatches(t);
+  return h('a', { class: 't-card', href: '#/t/' + t.id },
+    h('div', { class: 't-art' }, artView(t)),
+    h('div', { class: 't-body' },
+      h('div', { class: 't-name' }, t.name || 'Untitled tournament'),
+      t.dates ? h('div', { class: 't-dates' }, t.dates) : null,
+      h('div', { class: 't-meta' }, plural(t.stages.length, 'stage') + ' · ' + plural(n, 'match', 'matches'))));
+}
+function addTournament() {
+  const t = {
+    id: uid('t'), name: 'New tournament', year: String(new Date().getFullYear()), dates: '', location: '', teamsText: '', logo: '', art: '',
+    stages: [{ id: uid('s'), name: 'Stage 1', info: '', rounds: [{ id: uid('r'), name: 'Round 1', locked: false, matches: [] }] }]
+  };
+  data.tournaments.unshift(t);
+  if (!findT(data.site.featuredId)) data.site.featuredId = t.id;
+  location.hash = '#/t/' + t.id;
+  scheduleSave();
+}
+
+/* ---------- tournament ---------- */
+function renderTournament(app, r) {
+  const t = findT(r.tid);
+  if (!t) return renderNotFound(app);
+  const s = t.stages.find(x => x.id === r.sid) || t.stages[0] || null;
+
+  const title = ed('h1', 't-title', t.name, v => { t.name = v; }, { label: 'Tournament name', placeholder: 'Tournament name' });
+  if (!editing() && !t.name) title.textContent = 'Untitled tournament';
+  const meta = editing()
+    ? h('div', { class: 'meta' },
+        ed('span', '', t.dates, v => { t.dates = v; }, { label: 'Dates', placeholder: 'Add dates' }), dot(),
+        ed('span', '', t.location, v => { t.location = v; }, { label: 'Location', placeholder: 'Add location' }), dot(),
+        ed('span', '', t.teamsText, v => { t.teamsText = v; }, { label: 'Number of teams', placeholder: 'e.g. 16 teams' }))
+    : metaLine([t.dates, t.location, t.teamsText]);
+  const head = h('section', { class: 'wrap t-head' },
+    h('nav', { class: 'crumbs', 'aria-label': 'Breadcrumb' }, h('a', { href: '#/' }, 'Home'), sep(), h('a', { href: '#/tournaments' }, 'Tournaments'), sep(), h('span', { class: 'crumb-cur' }, t.name || 'Untitled tournament')),
+    h('div', { class: 't-title-row' },
+      imgSlot({ src: t.logo, alt: (t.name || 'Tournament') + ' logo', kind: 'logo', cls: 't-logo', what: 'logo', onChange: v => { t.logo = v; }, fallback: () => monogram(t.name) }),
+      h('div', { class: 't-title-col' }, title, meta)));
+  if (editing()) {
+    const i = data.tournaments.indexOf(t);
+    head.append(h('div', { class: 'edit-panel' },
+      h('div', { class: 'field' }, h('span', { class: 'lbl' }, 'Year'),
+        ed('span', '', t.year, v => { t.year = v; }, { label: 'Year', placeholder: 'e.g. 2026' }),
+        h('span', { class: 'hint' }, 'Used for the year filter on the home page.')),
+      h('div', { class: 'field' }, h('span', { class: 'lbl' }, 'Card picture'),
+        imgSlot({ src: t.art, alt: '', kind: 'art', cls: 'art-edit', empty: 'No card picture yet', onChange: v => { t.art = v; } }),
+        h('span', { class: 'hint' }, 'Shown on the home page. Wide pictures work best.')),
+      h('div', { class: 'field' }, h('span', { class: 'lbl' }, 'This tournament'),
+        h('div', { class: 'row' },
+          data.site.featuredId === t.id
+            ? h('span', { class: 'hint' }, 'Featured on the home page.')
+            : h('button', { type: 'button', class: 'mini-btn', onClick: () => { data.site.featuredId = t.id; commit(); toast('Now featured on the home page'); } }, 'Feature on home page'),
+          h('button', { type: 'button', class: 'mini-btn', disabled: i === 0, onClick: () => moveIn(data.tournaments, t, -1) }, 'Move up the list'),
+          h('button', { type: 'button', class: 'mini-btn', disabled: i === data.tournaments.length - 1, onClick: () => moveIn(data.tournaments, t, 1) }, 'Move down the list'),
+          h('button', { type: 'button', class: 'mini-btn danger', onClick: async () => {
+            if (!(await askConfirm('Delete “' + (t.name || 'this tournament') + '” with all its stages and matches?', 'Delete tournament'))) return;
+            data.tournaments.splice(data.tournaments.indexOf(t), 1);
+            if (data.site.featuredId === t.id) data.site.featuredId = '';
+            location.hash = '#/'; commit(); toast('Tournament deleted');
+          } }, 'Delete tournament')))));
+  }
+  app.append(head);
+
+  const tabs = h('div', { class: 'wrap stage-tabs' }, t.stages.map(st => h('a', { class: 'stage-tab', href: '#/t/' + t.id + '/' + st.id, 'aria-current': st === s ? 'page' : null }, st.name || 'Untitled stage')));
+  if (editing()) tabs.append(h('button', { type: 'button', class: 'stage-tab add', onClick: () => addStage(t) }, '+ Add stage'));
+  app.append(h('nav', { class: 'stage-nav', 'aria-label': 'Stages' }, tabs));
+
+  const body = h('section', { class: 'wrap stage-body' });
+  app.append(body);
+  if (!s) { body.append(h('p', { class: 'empty' }, editing() ? 'Add a stage to start adding matches.' : 'No matches have been added yet.')); return; }
+  const si = t.stages.indexOf(s);
+  body.append(h('div', { class: 'section-head' },
+    ed('h2', 'h2', s.name || (editing() ? '' : 'Stage'), v => { s.name = v; }, { label: 'Stage name', placeholder: 'Stage name' }),
+    (editing() || s.info) ? ed('div', 'stage-meta', s.info, v => { s.info = v; }, { label: 'Stage details', placeholder: 'Format and dates, e.g. Swiss · Best of 3' }) : null));
+  if (editing()) body.append(h('div', { class: 'row' },
+    h('button', { type: 'button', class: 'mini-btn', disabled: si === 0, onClick: () => moveIn(t.stages, s, -1) }, 'Move stage left'),
+    h('button', { type: 'button', class: 'mini-btn', disabled: si === t.stages.length - 1, onClick: () => moveIn(t.stages, s, 1) }, 'Move stage right'),
+    h('button', { type: 'button', class: 'mini-btn danger', onClick: async () => {
+      if (!(await askConfirm('Delete the stage “' + (s.name || 'Untitled') + '” and all its matches?', 'Delete stage'))) return;
+      t.stages.splice(t.stages.indexOf(s), 1);
+      location.hash = '#/t/' + t.id; commit(); toast('Stage deleted');
+    } }, 'Delete stage')));
+  s.rounds.forEach((rd, i) => body.append(roundView(t, s, rd, i)));
+  if (!s.rounds.length && !editing()) body.append(h('p', { class: 'empty' }, 'No matches in this stage yet.'));
+  if (editing()) body.append(h('button', { type: 'button', class: 'add-tile slim', onClick: () => {
+    s.rounds.push({ id: uid('r'), name: 'Round ' + (s.rounds.length + 1), locked: true, matches: [] }); commit();
+  } }, '+ Add round'));
+}
+function addStage(t) {
+  const st = { id: uid('s'), name: 'Stage ' + (t.stages.length + 1), info: '', rounds: [{ id: uid('r'), name: 'Round 1', locked: t.stages.length > 0, matches: [] }] };
+  t.stages.push(st);
+  location.hash = '#/t/' + t.id + '/' + st.id;
+  scheduleSave();
+}
+function prevName(t, s, i) {
+  if (i > 0) return s.rounds[i - 1].name || 'the round before';
+  const si = t.stages.indexOf(s);
+  return si > 0 ? (t.stages[si - 1].name || 'the stage before') : '';
+}
+function roundView(t, s, rd, i) {
+  const revealed = !!store.get('revealed', {})[rd.id];
+  const open = editing() || !rd.locked || revealed;
+  const head = h('div', { class: 'round-head' }, ed('h3', 'round-title', rd.name || (editing() ? '' : 'Round'), v => { rd.name = v; }, { label: 'Round name', placeholder: 'Round name' }));
+  if (editing()) {
+    const cb = h('input', { type: 'checkbox', id: 'lock-' + rd.id, checked: rd.locked });
+    cb.addEventListener('change', () => { rd.locked = cb.checked; scheduleSave(); });
+    head.append(h('div', { class: 'row' },
+      h('label', { class: 'check', for: cb.id }, cb, 'Hide matchups until the visitor chooses to see them'),
+      h('button', { type: 'button', class: 'mini-btn danger', onClick: async () => {
+        if (!(await askConfirm('Delete ' + (rd.name || 'this round') + ' and its matches?', 'Delete round'))) return;
+        s.rounds.splice(s.rounds.indexOf(rd), 1); commit(); toast('Round deleted');
+      } }, 'Delete round')));
+  } else if (rd.locked && revealed) {
+    head.append(h('button', { type: 'button', class: 'text-btn', onClick: () => { setRevealed(rd.id, false); rerender(); } }, 'Hide again'));
+  }
+  const wrap = h('div', { class: 'round' }, head);
+  if (open) {
+    if (!rd.matches.length && !editing()) wrap.append(h('p', { class: 'empty' }, 'No matches in this round yet.'));
+    else {
+      const grid = h('div', { class: 'grid' }, rd.matches.map(m => matchCard(m, rd)));
+      if (editing()) grid.append(h('button', { type: 'button', class: 'add-tile', onClick: () => openMatchDialog(null, rd) }, '+ Add match'));
+      wrap.append(grid);
+    }
+  } else {
+    const prev = prevName(t, s, i);
+    wrap.append(h('div', { class: 'locked' },
+      h('div', { class: 'locked-text' }, icon('lock', 30), h('div', {},
+        h('div', { class: 'locked-title' }, (rd.name || 'These') + ' matchups are hidden'),
+        h('p', { class: 'locked-sub' }, prev ? 'Seeing who plays who here could give away results from ' + prev + '.' : 'Seeing these matchups early could give away results.'))),
+      h('button', { type: 'button', class: 'btn btn-inv', onClick: () => { setRevealed(rd.id, true); rerender(); } }, 'Show ' + (rd.name || 'matchups'))));
+  }
+  return wrap;
+}
+function thumbView(m) {
+  const box = h('div', { class: 'thumb' });
+  if (m.thumb) { box.append(h('img', { class: 'custom', src: m.thumb, alt: '' })); return box; }
+  box.append(h('div', { class: 'thumb-names' },
+    h('div', { class: 'thumb-team' }, teamName(m.a)),
+    h('div', { class: 'thumb-vs' }, 'versus'),
+    h('div', { class: 'thumb-team' }, teamName(m.b))));
+  const ta = team(m.a), tb = team(m.b);
+  if ((ta && ta.logo) || (tb && tb.logo)) box.append(h('div', { class: 'thumb-logos' }, logoBox(ta, 'logo-sm'), logoBox(tb, 'logo-sm')));
+  box.append(h('span', { class: 'bo-tag' }, 'BO' + m.bo));
+  return box;
+}
+function matchCard(m, rd) {
+  const watched = !!store.get('watched', {})[m.id];
+  const card = h('a', { class: 'm-card', href: '#/match/' + m.id + '/0' },
+    thumbView(m),
+    watched ? h('span', { class: 'watched-chip' }, 'Watched') : null,
+    h('div', { class: 'm-cap' }, h('span', {}, teamName(m.a) + ' vs ' + teamName(m.b)), m.date ? h('span', {}, m.date) : null));
+  const w = h('div', { class: 'm-wrap' }, card);
+  if (editing()) w.append(h('div', { class: 'row' }, h('button', { type: 'button', class: 'mini-btn', onClick: () => openMatchDialog(m, rd) }, 'Edit match')));
+  return w;
+}
+function renderNotFound(app) {
+  app.append(h('section', { class: 'wrap notfound' },
+    h('h1', { class: 'h2' }, 'Page not found'),
+    h('p', {}, 'This tournament or match may have been removed.'),
+    h('a', { class: 'btn btn-outline', href: '#/' }, 'Go to the home page')));
+}
+
+/* ---------- player page ---------- */
+function renderPlayer(app, r) {
+  const f = findMatch(r.mid);
+  if (!f) return renderNotFound(app);
+  const { t, s, rd, m } = f;
+  const idx = Math.min(Math.max(0, r.map || 0), m.maps.length - 1);
+  const map = m.maps[idx];
+  const page = h('div', { class: 'wrap player-page' },
+    h('nav', { class: 'crumbs', 'aria-label': 'Breadcrumb' },
+      h('a', { href: '#/t/' + t.id }, t.name || 'Tournament'), sep(),
+      h('a', { href: '#/t/' + t.id + '/' + s.id }, s.name || 'Stage'), sep(),
+      h('span', { class: 'crumb-cur' }, rd.name || 'Round')));
+
+  const host = h('div', { id: 'yt-host' });
+  const cover = h('div', { class: 'cover', id: 'cover' });
+  const ctl = buildControls();
+  const col = h('div', { class: 'player-col' },
+    h('div', { class: 'player', id: 'player' }, h('div', { class: 'video-frame' }, host, cover), ctl.bar),
+    h('div', { class: 'match-head' },
+      h('h1', { class: 'match-title' }, teamName(m.a), ' ', h('span', { class: 'vs' }, 'versus'), ' ', teamName(m.b)),
+      metaLine(['Map ' + (idx + 1) + (map.name ? ' · ' + map.name : ''), s.name, rd.name, 'Best of ' + m.bo, m.date])),
+    editing() ? h('div', { class: 'row' }, h('button', { type: 'button', class: 'mini-btn', onClick: () => openMatchDialog(m, rd) }, 'Edit match')) : null);
+
+  const watched = !!store.get('watched', {})[m.id];
+  const wbtn = h('button', { type: 'button', class: 'btn ' + (watched ? 'btn-inv' : 'btn-outline'), 'aria-pressed': String(watched) }, watched ? 'Watched' : 'Mark as watched');
+  wbtn.addEventListener('click', () => {
+    const w = store.get('watched', {});
+    const on = !w[m.id];
+    if (on) w[m.id] = true; else delete w[m.id];
+    store.set('watched', w);
+    wbtn.className = 'btn ' + (on ? 'btn-inv' : 'btn-outline');
+    wbtn.setAttribute('aria-pressed', String(on));
+    wbtn.textContent = on ? 'Watched' : 'Mark as watched';
+  });
+  const aside = h('aside', { class: 'maps', 'aria-label': 'Maps in this series' },
+    h('div', { class: 'maps-head' }, h('h2', { class: 'maps-title' }, 'Maps'), h('span', { class: 'hint' }, 'Best of ' + m.bo)),
+    h('div', { class: 'map-list' }, m.maps.map((mp, i) => h('a', { class: 'map-btn', href: '#/match/' + m.id + '/' + i, 'aria-current': i === idx ? 'true' : null },
+      h('span', { class: 'map-label' }, 'Map ' + (i + 1)),
+      h('span', { class: 'map-state' }, i === idx ? 'Now showing' : 'Open')))),
+    h('p', { class: 'hint' }, 'Every possible map is listed, so this list can’t tell you how long the series went. Map names only show for the map you’re on.'),
+    wbtn,
+    h('p', { class: 'hint' }, 'Keys: Space plays or pauses. ← and → skip 10 seconds, hold Shift for 30. F for full screen.'));
+  page.append(h('div', { class: 'player-row' }, col, aside));
+
+  const others = rd.matches.filter(x => x !== m);
+  if (others.length) page.append(h('section', { class: 'more' },
+    h('h2', { class: 'h2 h2-sm' }, 'More from ' + (rd.name || 'this round')),
+    h('div', { class: 'grid' }, others.map(x => matchCard(x, rd)))));
+  app.append(page);
+  mountPlayer(f, idx, { host, cover, ctl });
+}
+function buildControls() {
+  const btn = (label, content) => h('button', { type: 'button', class: 'ctl', 'aria-label': label }, content);
+  const c = {
+    play: btn('Play', icon('play', 22)),
+    b30: btn('Back 30 seconds', '−30s'),
+    b10: btn('Back 10 seconds', '−10s'),
+    f10: btn('Forward 10 seconds', '+10s'),
+    f30: btn('Forward 30 seconds', '+30s'),
+    elapsed: h('span', { class: 'elapsed', title: 'Time watched so far' }, '0:00'),
+    mute: btn('Mute', icon('vol', 22)),
+    vol: h('input', { type: 'range', min: '0', max: '100', step: '5', value: '100', class: 'vol', id: 'vol', 'aria-label': 'Volume' }),
+    fs: btn('Full screen', icon('fs', 22))
+  };
+  c.bar = h('div', { class: 'controls' }, c.play, c.b30, c.b10, c.f10, c.f30, h('span', { class: 'spacer' }),
+    c.elapsed, h('span', { class: 'len-hidden' }, icon('eyeoff', 16), h('span', {}, 'Length hidden')), c.mute, c.vol, c.fs);
+  return c;
+}
+
+/* ---------- spoiler-free YouTube player ---------- */
+let ytPromise = null;
+function loadYT() {
+  if (window.YT && window.YT.Player) return Promise.resolve(window.YT);
+  if (ytPromise) return ytPromise;
+  ytPromise = new Promise((resolve, reject) => {
+    const prev = window.onYouTubeIframeAPIReady;
+    window.onYouTubeIframeAPIReady = () => { if (typeof prev === 'function') prev(); resolve(window.YT); };
+    const sc = document.createElement('script');
+    sc.src = 'https://www.youtube.com/iframe_api';
+    sc.async = true;
+    sc.onerror = () => { ytPromise = null; sc.remove(); reject(new Error('blocked')); };
+    document.head.append(sc);
+    setTimeout(() => { if (!(window.YT && window.YT.Player)) { ytPromise = null; reject(new Error('timeout')); } }, 15000);
+  });
+  return ytPromise;
+}
+function currentTime() {
+  try { return (P && P.ready && P.yt.getCurrentTime()) || 0; } catch (e) { return 0; }
+}
+function mountPlayer(f, idx, els) {
+  const m = f.m, map = m.maps[idx];
+  const st = { f, m, idx, els, yt: null, ready: false, played: false, timer: null, maskTimer: null, lastSave: 0, mode: '', resumeAt: 0 };
+  P = st;
+  const c = els.ctl;
+  const live = [c.play, c.b30, c.b10, c.f10, c.f30, c.mute, c.vol];
+  live.forEach(b => { b.disabled = true; });
+  c.play.addEventListener('click', togglePlay);
+  c.b30.addEventListener('click', () => seek(-30));
+  c.b10.addEventListener('click', () => seek(-10));
+  c.f10.addEventListener('click', () => seek(10));
+  c.f30.addEventListener('click', () => seek(30));
+  c.mute.addEventListener('click', toggleMute);
+  c.vol.addEventListener('input', () => {
+    if (!st.ready) return;
+    const v = +c.vol.value;
+    st.yt.setVolume(v);
+    if (v === 0) st.yt.mute(); else st.yt.unMute();
+    store.set('vol', { v, muted: v === 0 });
+    updateMuteIcon(v === 0);
+  });
+  c.fs.addEventListener('click', toggleFullscreen);
+  els.cover.addEventListener('click', e => {
+    if (e.target.closest('button, a')) return;
+    if (st.mode === 'start' || st.mode === 'paused' || st.mode === 'clear') togglePlay();
+  });
+  els.cover.addEventListener('dblclick', e => { if (!e.target.closest('button, a')) toggleFullscreen(); });
+
+  const vid = parseYouTube(map.video);
+  if (map.notPlayed) return setCover('notplayed');
+  if (!vid.id) return setCover('novideo');
+  if (location.protocol === 'file:') return setCover('file');
+  const saved = resumeTime(m.id, idx);
+  st.resumeAt = saved > 15 ? saved : 0;
+  const startAt = st.resumeAt || toSeconds(map.start) || vid.start || 0;
+  const auto = autoplayNext;
+  autoplayNext = false;
+  setCover('loading');
+  loadYT().then(YT => {
+    if (P !== st) return;
+    st.yt = new YT.Player(els.host, {
+      host: 'https://www.youtube-nocookie.com',
+      videoId: vid.id,
+      width: '100%',
+      height: '100%',
+      playerVars: { controls: 0, disablekb: 1, fs: 0, rel: 0, iv_load_policy: 3, modestbranding: 1, playsinline: 1, start: Math.floor(startAt), origin: location.origin },
+      events: {
+        onReady: () => {
+          if (P !== st) return;
+          st.ready = true;
+          live.forEach(b => { b.disabled = false; });
+          applyVol();
+          setCover('start');
+          if (auto) st.yt.playVideo();
+          st.timer = setInterval(tick, 500);
+          tick();
+        },
+        onStateChange: e => {
+          if (P !== st) return;
+          const S = YT.PlayerState;
+          if (e.data === S.PLAYING) { st.played = true; setCover('clear'); }
+          else if (e.data === S.PAUSED) setCover('paused');
+          else if (e.data === S.ENDED) { clearResume(m.id, idx); st.resumeAt = 0; setCover('ended'); }
+          else if (e.data === S.BUFFERING) { if (!st.played) setCover('loading'); }
+          else if (e.data === S.CUED) setCover('start');
+          updatePlayIcon(e.data === S.PLAYING || (e.data === S.BUFFERING && st.played));
+        },
+        onError: () => { if (P === st) setCover('error-video'); }
+      }
+    });
+  }).catch(() => { if (P === st) setCover('error-api'); });
+}
+/* The cover sits over the YouTube frame at all times. It is solid whenever the
+   video isn't playing (so YouTube's title, end screens and suggestions never show)
+   and see-through while playing, still catching clicks so YouTube's own UI stays hidden. */
+function setCover(mode) {
+  const st = P;
+  if (!st) return;
+  const prev = st.mode;
+  st.mode = mode;
+  const c = st.els.cover;
+  if (mode === 'clear') {
+    if (prev === 'clear') return;
+    c.className = 'cover clear mask-top';
+    c.replaceChildren();
+    clearTimeout(st.maskTimer);
+    st.maskTimer = setTimeout(() => { if (P === st && st.mode === 'clear') c.classList.remove('mask-top'); }, 3500);
+    return;
+  }
+  c.className = 'cover';
+  c.replaceChildren();
+  const { t, s, rd, m } = st.f;
+  const idx = st.idx, label = 'Map ' + (idx + 1);
+  const next = idx + 1 < m.maps.length ? idx + 1 : -1;
+  const back = () => h('a', { class: 'btn btn-ghost', href: '#/t/' + t.id + '/' + s.id }, 'Back to ' + (rd.name || 'the round'));
+  const playBtn = () => h('button', { type: 'button', class: 'big-play', 'aria-label': 'Play', onClick: e => { e.stopPropagation(); togglePlay(); } }, icon('play', 36, 'currentColor'));
+  if (mode === 'loading') {
+    c.append(h('div', { class: 'spinner', 'aria-hidden': 'true' }), h('p', { class: 'cover-sub' }, 'Loading the video…'));
+  } else if (mode === 'start') {
+    c.append(h('div', { class: 'cover-eyebrow' }, label), h('div', { class: 'cover-title' }, teamName(m.a) + ' vs ' + teamName(m.b)), playBtn(),
+      st.resumeAt ? h('div', { class: 'resume' }, h('span', {}, 'Picks up where you left off, at ' + fmt(st.resumeAt) + '.'),
+        h('button', { type: 'button', class: 'text-btn light', onClick: e => { e.stopPropagation(); restart(); } }, 'Start from the beginning')) : null);
+  } else if (mode === 'paused') {
+    c.append(h('div', { class: 'cover-eyebrow' }, 'Paused · ' + label), h('div', { class: 'cover-title', id: 'cover-time' }, fmt(currentTime())), playBtn());
+  } else if (mode === 'ended') {
+    c.append(h('div', { class: 'cover-eyebrow' }, 'End of ' + label),
+      h('div', { class: 'cover-title' }, next >= 0 ? 'Ready for Map ' + (next + 1) + '?' : 'That’s the end of the series'),
+      h('div', { class: 'btn-row center' },
+        next >= 0 ? h('a', { class: 'btn btn-accent', href: '#/match/' + m.id + '/' + next, onClick: () => { autoplayNext = true; } }, 'Play Map ' + (next + 1)) : null,
+        back()));
+  } else if (mode === 'notplayed') {
+    c.append(h('div', { class: 'cover-eyebrow' }, label), h('div', { class: 'cover-title' }, label + ' wasn’t played'),
+      h('p', { class: 'cover-sub' }, 'The series was decided before this map.'), back());
+  } else if (mode === 'novideo') {
+    c.append(h('div', { class: 'cover-eyebrow' }, label), h('div', { class: 'cover-title' }, 'Video coming soon'),
+      h('p', { class: 'cover-sub' }, editing() ? 'Add a YouTube link for this map with Edit match.' : 'The video for this map hasn’t been added yet.'),
+      editing() ? h('button', { type: 'button', class: 'btn btn-accent', onClick: e => { e.stopPropagation(); openMatchDialog(m, rd); } }, 'Edit match') : back());
+  } else if (mode === 'file') {
+    c.append(h('div', { class: 'cover-title' }, 'Videos play once the site is online'),
+      h('p', { class: 'cover-sub' }, 'YouTube only plays embedded videos on a web address. Upload index.html to your web host, or open it through a local web server, to watch here.'));
+  } else if (mode === 'error-api') {
+    c.append(h('div', { class: 'cover-title' }, 'The video player didn’t load'),
+      h('p', { class: 'cover-sub' }, 'Check your internet connection, or turn off anything that blocks YouTube, then reload the page.'));
+  } else if (mode === 'error-video') {
+    c.append(h('div', { class: 'cover-title' }, 'This video can’t be played here'),
+      h('p', { class: 'cover-sub' }, editing() ? 'It may be private, removed, or not allowed to play on other sites. Check the link with Edit match.' : 'It may be private or no longer available.'),
+      back());
+  }
+}
+function tick() {
+  const st = P;
+  if (!st || !st.ready) return;
+  const t = currentTime();
+  st.els.ctl.elapsed.textContent = fmt(t);
+  if (st.mode === 'paused') { const ct = document.getElementById('cover-time'); if (ct) ct.textContent = fmt(t); }
+  const now = Date.now();
+  if (st.mode !== 'ended' && t > 15 && now - st.lastSave > 4000) { st.lastSave = now; saveResume(st.m.id, st.idx, t); }
+}
+function togglePlay() {
+  const st = P;
+  if (!st || !st.ready) return;
+  const s = st.yt.getPlayerState();
+  if (s === 1 || s === 3) st.yt.pauseVideo(); else st.yt.playVideo();
+}
+function seek(d) {
+  const st = P;
+  if (!st || !st.ready) return;
+  st.yt.seekTo(Math.max(0, currentTime() + d), true);
+  setTimeout(tick, 150);
+}
+function restart() {
+  const st = P;
+  if (!st || !st.ready) return;
+  st.resumeAt = 0;
+  clearResume(st.m.id, st.idx);
+  st.yt.seekTo(0, true);
+  st.yt.playVideo();
+}
+function updatePlayIcon(playing) {
+  if (!P) return;
+  const b = P.els.ctl.play;
+  b.replaceChildren(icon(playing ? 'pause' : 'play', 22));
+  b.setAttribute('aria-label', playing ? 'Pause' : 'Play');
+}
+function applyVol() {
+  const st = P;
+  if (!st || !st.ready) return;
+  const v = store.get('vol', { v: 100, muted: false });
+  st.yt.setVolume(v.v);
+  if (v.muted) st.yt.mute(); else st.yt.unMute();
+  st.els.ctl.vol.value = String(v.v);
+  updateMuteIcon(!!v.muted);
+}
+function toggleMute() {
+  const st = P;
+  if (!st || !st.ready) return;
+  const was = st.yt.isMuted();
+  if (was) st.yt.unMute(); else st.yt.mute();
+  store.set('vol', { v: +st.els.ctl.vol.value, muted: !was });
+  updateMuteIcon(!was);
+}
+function updateMuteIcon(muted) {
+  if (!P) return;
+  const b = P.els.ctl.mute;
+  b.replaceChildren(icon(muted ? 'mute' : 'vol', 22));
+  b.setAttribute('aria-label', muted ? 'Unmute' : 'Mute');
+}
+function toggleFullscreen() {
+  const el = document.getElementById('player');
+  if (!el) return;
+  const fsEl = document.fullscreenElement || document.webkitFullscreenElement;
+  if (fsEl) { const ex = document.exitFullscreen || document.webkitExitFullscreen; if (ex) { const p = ex.call(document); if (p && p.catch) p.catch(() => {}); } return; }
+  const req = el.requestFullscreen || el.webkitRequestFullscreen;
+  if (req) { const p = req.call(el); if (p && p.catch) p.catch(() => {}); }
+}
+function destroyPlayer() {
+  if (!P) return;
+  const st = P;
+  P = null;
+  clearInterval(st.timer);
+  clearTimeout(st.maskTimer);
+  if (st.ready && st.mode !== 'ended') {
+    let t = 0;
+    try { t = st.yt.getCurrentTime() || 0; } catch (e) { t = 0; }
+    if (t > 15) saveResume(st.m.id, st.idx, t);
+  }
+  try { if (st.yt && st.yt.destroy) st.yt.destroy(); } catch (e) { /* already gone */ }
+  if (document.fullscreenElement && document.exitFullscreen) document.exitFullscreen().catch(() => {});
+}
+document.addEventListener('keydown', e => {
+  if (!P || !P.ready) return;
+  if (e.altKey || e.ctrlKey || e.metaKey) return;
+  if (document.querySelector('dialog[open]')) return;
+  const tgt = e.target;
+  if (tgt && tgt.closest && tgt.closest('input, textarea, select, [contenteditable="true"], [contenteditable="plaintext-only"]')) return;
+  const k = e.key;
+  if ((k === ' ' || k === 'Enter') && tgt && tgt.closest && tgt.closest('button, a')) return;
+  if (k === ' ' || k === 'k' || k === 'K') { e.preventDefault(); togglePlay(); }
+  else if (k === 'ArrowLeft') { e.preventDefault(); seek(e.shiftKey ? -30 : -10); }
+  else if (k === 'ArrowRight') { e.preventDefault(); seek(e.shiftKey ? 30 : 10); }
+  else if (k === 'j' || k === 'J') seek(-30);
+  else if (k === 'l' || k === 'L') seek(30);
+  else if (k === 'm' || k === 'M') toggleMute();
+  else if (k === 'f' || k === 'F') toggleFullscreen();
+});
+window.addEventListener('pagehide', () => {
+  if (P && P.ready && P.mode !== 'ended') { const t = currentTime(); if (t > 15) saveResume(P.m.id, P.idx, t); }
+});
+
+/* ---------- dialogs ---------- */
+function showDialog(dlg, title, body, foot) {
+  const tid = dlg.id + '-title';
+  dlg.replaceChildren(
+    h('div', { class: 'dlg-head' }, h('h2', { class: 'dlg-title', id: tid }, title),
+      h('button', { type: 'button', class: 'icon-close', 'aria-label': 'Close', onClick: () => dlg.close() }, icon('x', 20))),
+    body,
+    h('div', { class: 'dlg-foot' }, foot));
+  dlg.setAttribute('aria-labelledby', tid);
+  if (!dlg.open) dlg.showModal();
+}
+function askConfirm(msg, okLabel) {
+  return new Promise(resolve => {
+    const dlg = $('#dlg-confirm');
+    let result = false;
+    const ok = h('button', { type: 'button', class: 'btn btn-accent', onClick: () => { result = true; dlg.close(); } }, okLabel || 'Confirm');
+    const cancel = h('button', { type: 'button', class: 'btn btn-outline', onClick: () => dlg.close() }, 'Cancel');
+    dlg.onclose = () => { dlg.onclose = null; resolve(result); };
+    showDialog(dlg, 'Are you sure?', h('div', { class: 'dlg-body' }, h('p', {}, msg)), [h('span'), h('div', { class: 'row' }, cancel, ok)]);
+    cancel.focus();
+  });
+}
+function mapEditor(mp, i) {
+  const nameIn = h('input', { id: 'md-m' + i + '-name', class: 'input', type: 'text', value: mp.name, placeholder: 'e.g. Mirage', autocomplete: 'off' });
+  const vidIn = h('input', { id: 'md-m' + i + '-video', class: 'input', type: 'text', inputmode: 'url', value: mp.video, placeholder: 'https://www.youtube.com/watch?v=…', autocomplete: 'off', spellcheck: 'false' });
+  const startIn = h('input', { id: 'md-m' + i + '-start', class: 'input', type: 'text', value: mp.start, placeholder: 'e.g. 1:30', autocomplete: 'off' });
+  const np = h('input', { type: 'checkbox', id: 'md-m' + i + '-np', checked: mp.notPlayed });
+  const hint = h('p', { class: 'hint', 'aria-live': 'polite' });
+  const upd = () => {
+    mp.name = nameIn.value.trim(); mp.video = vidIn.value.trim(); mp.start = startIn.value.trim(); mp.notPlayed = np.checked;
+    vidIn.disabled = startIn.disabled = mp.notPlayed;
+    const v = parseYouTube(mp.video);
+    hint.className = 'hint';
+    if (mp.notPlayed) hint.textContent = 'Visitors who open this map will see that it wasn’t played.';
+    else if (!mp.video) hint.textContent = 'No video yet. Visitors will see “Video coming soon”.';
+    else if (v.id) { hint.textContent = 'YouTube video found' + (v.start ? ', starting at ' + fmt(v.start) : '') + '.'; hint.classList.add('ok'); }
+    else { hint.textContent = 'That doesn’t look like a YouTube link. Copy the address from the video page or its Share button.'; hint.classList.add('bad'); }
+  };
+  [nameIn, vidIn, startIn].forEach(x => x.addEventListener('input', upd));
+  np.addEventListener('change', upd);
+  upd();
+  return h('div', { class: 'map-edit' },
+    h('div', { class: 'map-edit-head' }, h('strong', {}, 'Map ' + (i + 1)), h('label', { class: 'check', for: np.id }, np, 'This map wasn’t played')),
+    field('YouTube link', vidIn),
+    h('div', { class: 'form-grid' }, field('Map name', nameIn), field('Start at (optional)', startIn)),
+    hint);
+}
+function openMatchDialog(m, rd) {
+  const isNew = !m;
+  const draft = isNew ? { id: uid('m'), a: '', b: '', bo: 3, date: '', thumb: '', maps: [blankMap(), blankMap(), blankMap()] } : clone(m);
+  const dlg = $('#dlg');
+  const teamSelect = (id, value) => h('select', { id, class: 'input' },
+    h('option', { value: '' }, 'TBD (choose later)'),
+    data.teams.map(tm => h('option', { value: tm.id, selected: tm.id === value }, tm.name || 'Unnamed team')));
+  let selA = teamSelect('md-a', draft.a), selB = teamSelect('md-b', draft.b);
+  const boSel = h('select', { id: 'md-bo', class: 'input' }, [1, 3, 5].map(n => h('option', { value: String(n), selected: n === draft.bo }, 'Best of ' + n)));
+  const dateIn = h('input', { id: 'md-date', class: 'input', type: 'text', value: draft.date, placeholder: 'e.g. Day 1 or 3 June', autocomplete: 'off' });
+  const mapsBox = h('div', { class: 'maps-edit' });
+  const renderMaps = () => mapsBox.replaceChildren(...draft.maps.map((mp, i) => mapEditor(mp, i)));
+  boSel.addEventListener('change', () => {
+    const n = +boSel.value;
+    draft.bo = n;
+    while (draft.maps.length < n) draft.maps.push(blankMap());
+    draft.maps.length = n;
+    renderMaps();
+  });
+  renderMaps();
+
+  const thumbFile = h('input', { type: 'file', accept: 'image/*', class: 'sr-only', tabindex: '-1', 'aria-hidden': 'true' });
+  const thumbBox = h('div', { class: 'thumb-edit' });
+  const renderThumb = () => thumbBox.replaceChildren(
+    h('div', { class: 'thumb-prev' }, draft.thumb ? h('img', { src: draft.thumb, alt: 'Custom thumbnail' }) : h('span', { class: 'hint' }, 'Using the automatic thumbnail')),
+    h('div', { class: 'row' },
+      h('button', { type: 'button', class: 'mini-btn', onClick: () => thumbFile.click() }, draft.thumb ? 'Change picture' : 'Upload picture'),
+      draft.thumb ? h('button', { type: 'button', class: 'mini-btn', onClick: () => { draft.thumb = ''; renderThumb(); } }, 'Use the automatic thumbnail') : null));
+  thumbFile.addEventListener('change', async () => {
+    const file = thumbFile.files && thumbFile.files[0];
+    thumbFile.value = '';
+    if (!file) return;
+    try { draft.thumb = await readImage(file, 'art'); renderThumb(); } catch (e) { toast(BAD_PICTURE); }
+  });
+  renderThumb();
+
+  const teamsBtn = h('button', { type: 'button', class: 'mini-btn', onClick: () => {
+    draft.a = selA.value; draft.b = selB.value;
+    openTeamsDialog(() => {
+      teamsChangedInMatch = true;
+      const na = teamSelect('md-a', draft.a), nb = teamSelect('md-b', draft.b);
+      selA.replaceWith(na); selB.replaceWith(nb); selA = na; selB = nb;
+    });
+  } }, 'Add or edit teams');
+
+  const home = findRound(rd);
+  const roundSel = h('select', { id: 'md-round', class: 'input' }, home ? home.t.stages.map(s2 => h('optgroup', { label: s2.name || 'Untitled stage' },
+    s2.rounds.map(r2 => h('option', { value: r2.id, selected: r2 === rd }, (s2.name || 'Stage') + ' · ' + (r2.name || 'Round'))))) : null);
+  const findTargetRound = () => {
+    if (!home) return rd;
+    for (const s2 of home.t.stages) for (const r2 of s2.rounds) if (r2.id === roundSel.value) return r2;
+    return rd;
+  };
+  const isAuto = !isNew && m.id.indexOf('auto-') === 0;
+
+  const body = h('div', { class: 'dlg-body' },
+    isAuto ? h('p', { class: 'hint' }, 'The video watcher added this match. Anything you change here takes priority over what it finds.') : null,
+    h('div', { class: 'form-grid' }, field('Team A', selA), field('Team B', selB)),
+    h('div', { class: 'row' }, teamsBtn),
+    h('div', { class: 'form-grid' }, field('Series length', boSel), field('Date', dateIn)),
+    home ? field('Stage and round', roundSel) : null,
+    h('div', { class: 'section-label' }, 'Maps'),
+    h('p', { class: 'hint' }, 'Paste the YouTube link for each map. Tick “This map wasn’t played” for maps the series didn’t need. Visitors only find out if they open that map.'),
+    mapsBox,
+    h('div', { class: 'section-label' }, 'Thumbnail (optional)'),
+    h('p', { class: 'hint' }, 'Replaces the automatic card. Check it doesn’t show a score.'),
+    thumbBox, thumbFile);
+
+  const save = h('button', { type: 'button', class: 'btn btn-accent', onClick: () => {
+    draft.a = selA.value; draft.b = selB.value; draft.date = dateIn.value.trim(); draft.bo = +boSel.value;
+    const target = findTargetRound();
+    if (isNew) target.matches.push(draft);
+    else {
+      Object.assign(m, draft);
+      if (target !== rd) { rd.matches.splice(rd.matches.indexOf(m), 1); target.matches.push(m); }
+    }
+    dlg.close(); commit(); toast(isNew ? 'Match added' : 'Match saved');
+  } }, isNew ? 'Add match' : 'Save match');
+  const cancel = h('button', { type: 'button', class: 'btn btn-outline', onClick: () => dlg.close() }, 'Cancel');
+  const del = isNew ? h('span') : h('button', { type: 'button', class: 'mini-btn danger', onClick: async () => {
+    if (!(await askConfirm('Delete this match and its video links?', 'Delete match'))) return;
+    rd.matches.splice(rd.matches.indexOf(m), 1);
+    if (isAuto && !data.hiddenAuto.includes(m.id)) data.hiddenAuto.push(m.id);
+    dlg.close();
+    const r = parseRoute();
+    if (r.name === 'player' && r.mid === m.id) { const fr = findRound(rd); location.hash = fr ? '#/t/' + fr.t.id + '/' + fr.s.id : '#/'; }
+    commit(); toast('Match deleted');
+  } }, 'Delete match');
+  dlg.onclose = () => { dlg.onclose = null; if (teamsChangedInMatch) { teamsChangedInMatch = false; rerender(); } };
+  showDialog(dlg, isNew ? 'Add match' : 'Edit match', body, [del, h('div', { class: 'row' }, cancel, save)]);
+}
+function openTeamsDialog(onDone) {
+  const dlg = $('#dlg-teams');
+  const list = h('div', { class: 'team-list' });
+  const teamRow = tm => {
+    const nameIn = h('input', { id: 'tm-' + tm.id, class: 'input', type: 'text', value: tm.name, placeholder: 'Team name', 'aria-label': 'Team name', autocomplete: 'off' });
+    nameIn.addEventListener('input', () => { tm.name = nameIn.value; scheduleSave(); });
+    const aliasIn = h('input', { id: 'tma-' + tm.id, class: 'input', type: 'text', value: tm.aliases.join(', '), placeholder: 'e.g. NAVI, Natus Vincere', autocomplete: 'off' });
+    aliasIn.addEventListener('input', () => { tm.aliases = aliasIn.value.split(',').map(x => x.trim()).filter(Boolean); scheduleSave(); });
+    const aliasField = h('div', { class: 'field alias-field' }, h('label', { for: aliasIn.id }, 'Other names in video titles (comma separated)'), aliasIn);
+    const file = h('input', { type: 'file', accept: 'image/*', class: 'sr-only', tabindex: '-1', 'aria-hidden': 'true' });
+    file.addEventListener('change', async () => {
+      const fl = file.files && file.files[0];
+      file.value = '';
+      if (!fl) return;
+      try { tm.logo = await readImage(fl, 'logo'); scheduleSave(); render(); } catch (e) { toast(BAD_PICTURE); }
+    });
+    const uses = countTeamUses(tm.id);
+    return h('div', { class: 'team-row' }, logoBox(tm, 'logo-md'), nameIn, aliasField,
+      h('div', { class: 'row' },
+        h('button', { type: 'button', class: 'mini-btn', onClick: () => file.click() }, tm.logo ? 'Change logo' : 'Upload logo'),
+        tm.logo ? h('button', { type: 'button', class: 'mini-btn', onClick: () => { tm.logo = ''; scheduleSave(); render(); } }, 'Remove logo') : null,
+        uses ? h('span', { class: 'hint' }, 'Plays in ' + plural(uses, 'match', 'matches'))
+          : h('button', { type: 'button', class: 'mini-btn danger', onClick: () => {
+              data.teams = data.teams.filter(x => x !== tm);
+              if (tm.id.indexOf('auto-') === 0 && !data.hiddenAuto.includes(tm.id)) data.hiddenAuto.push(tm.id);
+              scheduleSave(); render();
+            } }, 'Delete team'),
+        file));
+  };
+  const render = () => {
+    list.replaceChildren();
+    if (!data.teams.length) list.append(h('p', { class: 'hint' }, 'No teams yet. Add the teams that play in your tournaments.'));
+    data.teams.forEach(tm => list.append(teamRow(tm)));
+  };
+  render();
+  const add = h('button', { type: 'button', class: 'mini-btn', onClick: () => {
+    const tm = { id: uid('tm'), name: '', logo: '', aliases: [] };
+    data.teams.push(tm); scheduleSave(); render();
+    const inp = document.getElementById('tm-' + tm.id); if (inp) inp.focus();
+  } }, '+ Add team');
+  const body = h('div', { class: 'dlg-body' },
+    h('p', { class: 'hint' }, 'Teams are shared across all your tournaments. Logos show on match cards; square pictures work best. The video watcher recognises a team by its name or any of its other names.'),
+    list, h('div', { class: 'row' }, add));
+  dlg.onclose = () => { dlg.onclose = null; if (onDone) onDone(); else rerender(); };
+  showDialog(dlg, 'Teams', body, [h('span'), h('button', { type: 'button', class: 'btn btn-accent', onClick: () => dlg.close() }, 'Done')]);
+}
+
+/* ---------- edit bar: download, backup, restore, discard ---------- */
+function saveFile(text, name, type) {
+  const url = URL.createObjectURL(new Blob([text], { type }));
+  const a = h('a', { href: url, download: name });
+  document.body.append(a);
+  a.click();
+  setTimeout(() => { URL.revokeObjectURL(url); a.remove(); }, 3000);
+}
+function downloadData() {
+  data.updatedAt = new Date().toISOString();
+  saveFile(JSON.stringify(data, null, 2) + '\n', 'data.json', 'application/json');
+  scheduleSave();
+  setStatus('Downloaded data.json. Upload it to your GitHub repository, replacing the old one, to publish.');
+}
+async function restore() {
+  const input = $('#eb-restore-file');
+  const f = input.files && input.files[0];
+  input.value = '';
+  if (!f) return;
+  let obj;
+  try { obj = JSON.parse(await f.text()); } catch (e) { obj = null; }
+  if (!obj || !Array.isArray(obj.tournaments)) { toast('That file isn’t site data. Choose a data.json downloaded from edit mode.'); return; }
+  if (!(await askConfirm('Replace everything in edit mode with the data from “' + f.name + '”?', 'Open this file'))) return;
+  data = mergeAuto(normalize(obj), AUTO);
+  commit();
+  toast('Data file opened');
+}
+async function discard() {
+  if (!(await askConfirm('Discard every change made in edit mode and go back to the published site? This can’t be undone.', 'Discard changes'))) return;
+  clearTimeout(saveTimer);
+  await idb.del('draft');
+  data = clone(PUBLISHED);
+  rerender();
+  setStatus('Changes discarded. You’re looking at the published site.');
+}
+function updateToggle() { $('#eb-toggle').textContent = showControls ? 'Preview' : 'Back to editing'; }
+function setupEditBar() {
+  document.documentElement.classList.add('edit-mode');
+  $('#edit-bar').hidden = false;
+  const exit = $('#eb-exit');
+  const setExit = () => { exit.href = location.pathname + location.hash; };
+  setExit();
+  window.addEventListener('hashchange', setExit);
+  updateToggle();
+  $('#eb-toggle').addEventListener('click', () => { showControls = !showControls; updateToggle(); rerender(); });
+  $('#eb-teams').addEventListener('click', () => openTeamsDialog());
+  $('#eb-download').addEventListener('click', downloadData);
+  $('#eb-restore').addEventListener('click', () => $('#eb-restore-file').click());
+  $('#eb-restore-file').addEventListener('change', restore);
+  $('#eb-discard').addEventListener('click', discard);
+}
+
+/* ---------- theme ---------- */
+function effectiveTheme() {
+  const a = document.documentElement.getAttribute('data-theme');
+  if (a) return a;
+  return window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+}
+function updateThemeBtn() {
+  const dark = effectiveTheme() === 'dark';
+  const b = $('#theme-btn');
+  b.setAttribute('aria-label', dark ? 'Switch to light mode' : 'Switch to dark mode');
+  b.replaceChildren(icon(dark ? 'sun' : 'moon', 20));
+}
+function initTheme() {
+  const t = store.get('theme', null);
+  if (t === 'dark' || t === 'light') document.documentElement.setAttribute('data-theme', t);
+  updateThemeBtn();
+  $('#theme-btn').addEventListener('click', () => {
+    const next = effectiveTheme() === 'dark' ? 'light' : 'dark';
+    document.documentElement.setAttribute('data-theme', next);
+    store.set('theme', next);
+    updateThemeBtn();
+  });
+  if (window.matchMedia) {
+    const mq = window.matchMedia('(prefers-color-scheme: dark)');
+    if (mq.addEventListener) mq.addEventListener('change', updateThemeBtn);
+  }
+}
+
+/* ---------- start ---------- */
+window.addEventListener('hashchange', () => route(false));
+initTheme();
+(async () => {
+  await loadSources();
+  if (EDIT) {
+    setupEditBar();
+    const d = await idb.get('draft');
+    if (d && d.data) {
+      data = mergeAuto(normalize(d.data), AUTO);
+      const siteNewer = BASE.updatedAt && Date.parse(BASE.updatedAt) > d.savedAt;
+      setStatus(siteNewer
+        ? 'The site’s data.json was updated after your changes here. Use Discard changes to switch to the site’s version.'
+        : 'Editing your saved changes from ' + ago(d.savedAt) + '. They’re kept in this browser.');
+    }
+  }
+  route(false, true);
+})();
+})();
+</script>
+</body>
+</html>
