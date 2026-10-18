@@ -1,0 +1,87 @@
+{
+  "notes": [
+    "Channels: ESL Counter-Strike (@ESLCS), BLAST (@BLASTPremier) and PGL (@pgl). PGL also posts Dota 2; those videos are ignored because their titles don't name a tournament below.",
+    "Majors are posted by whichever organiser runs them. The 2026 Singapore Major is PGL's. The first 2027 Major (Buenos Aires, 31 May - 20 Jun) is run by FiReSPORTS: add their channel nearer the time.",
+    "StarLadder and FISSURE aren't included: no English YouTube channel was found for StarLadder, and FISSURE has no events announced for the rest of 2026. Add their channels here when that changes.",
+    "To cover a new tournament: add it on the site in edit mode, then copy one of the blocks under \"tournaments\" and change the names, keywords and dates."
+  ],
+  "channels": ["@ESLCS", "@BLASTPremier", "@pgl"],
+  "tournaments": [
+    {
+      "siteTournament": "PGL Masters Bucharest 2026",
+      "titleKeywords": ["PGL Masters Bucharest", "Masters Bucharest", "PGL Bucharest 2026"],
+      "channels": ["@pgl"],
+      "stages": {
+        "Swiss Stage": ["swiss", "swiss stage", "group stage"],
+        "Playoffs": ["playoff", "playoffs", "quarterfinal", "quarterfinals", "quarter final", "quarter finals", "semifinal", "semifinals", "semi final", "semi finals", "grand final", "third place", "3rd place"]
+      },
+      "stageDates": {
+        "Swiss Stage": ["2026-10-24", "2026-10-28"],
+        "Playoffs": ["2026-10-29", "2026-10-31"]
+      },
+      "bestOfByRound": { "Grand final": 5 },
+      "defaultStage": "",
+      "defaultBestOf": 3
+    },
+    {
+      "siteTournament": "IEM Beijing 2026",
+      "titleKeywords": ["IEM Beijing", "IEM China", "Intel Extreme Masters Beijing", "Intel Extreme Masters China"],
+      "channels": ["@ESLCS"],
+      "stages": {
+        "Group Stage": ["group stage", "group a", "group b", "upper bracket", "lower bracket"],
+        "Playoffs": ["playoff", "playoffs", "quarterfinal", "quarterfinals", "quarter final", "quarter finals", "semifinal", "semifinals", "semi final", "semi finals", "grand final", "third place", "3rd place"]
+      },
+      "stageDates": {
+        "Group Stage": ["2026-11-02", "2026-11-04"],
+        "Playoffs": ["2026-11-06", "2026-11-08"]
+      },
+      "bestOfByRound": { "Grand final": 5 },
+      "defaultStage": "",
+      "defaultBestOf": 3
+    },
+    {
+      "siteTournament": "BLAST Rivals Hong Kong 2026",
+      "titleKeywords": ["BLAST Rivals", "Rivals Hong Kong", "BLAST Premier Rivals"],
+      "channels": ["@BLASTPremier"],
+      "stages": {
+        "Group Stage": ["group stage", "group a", "group b", "opening match", "winners match", "winner s match", "elimination match", "decider match"],
+        "Playoffs": ["playoff", "playoffs", "quarterfinal", "quarterfinals", "quarter final", "quarter finals", "semifinal", "semifinals", "semi final", "semi finals", "grand final"]
+      },
+      "stageDates": {
+        "Group Stage": ["2026-11-11", "2026-11-12"],
+        "Playoffs": ["2026-11-13", "2026-11-15"]
+      },
+      "bestOfByRound": { "Grand final": 5 },
+      "defaultStage": "",
+      "defaultBestOf": 3
+    },
+    {
+      "siteTournament": "PGL Major Singapore 2026",
+      "titleKeywords": ["Singapore Major", "PGL Major Singapore", "Major Singapore"],
+      "channels": ["@pgl"],
+      "stages": {
+        "Stage 1": ["stage 1", "stage one"],
+        "Stage 2": ["stage 2", "stage two"],
+        "Stage 3": ["stage 3", "stage three"],
+        "Playoffs": ["playoff", "playoffs", "quarterfinal", "quarterfinals", "quarter final", "quarter finals", "semifinal", "semifinals", "semi final", "semi finals", "grand final", "third place", "3rd place"]
+      },
+      "stageDates": {
+        "Playoffs": ["2026-12-10", "2026-12-13"]
+      },
+      "bestOfByRound": { "Grand final": 5 },
+      "defaultStage": "",
+      "defaultBestOf": 3
+    }
+  ],
+  "markUnplayedAfterHours": 12,
+  "minVideoMinutes": 15,
+  "maxVideoHours": 8,
+  "maxLivestreamHours": 4,
+  "stageDateGraceHours": 18,
+  "uploadDelayHours": 4,
+  "lookbackDays": 10,
+  "autoCreateTeams": true,
+  "autoCreateMatches": true,
+  "ignoreTitlesWith": ["highlights", "recap", "interview", "preview", "trailer", "press conference", "#shorts", "analyst desk", "pick'em", "top 10", "best moments", "aftermovie", "documentary", "behind the scenes", "watch party", "vlog", "teaser", "draw show"],
+  "ignoreVideos": []
+}
